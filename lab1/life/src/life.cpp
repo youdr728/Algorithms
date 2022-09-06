@@ -11,6 +11,9 @@
 void displayWelcome();
 Grid<char> readFile();
 char displayChoices();
+void displayGrid(const Grid<char>&); // nytt (const för att den inte ändras)
+Grid<char> tick(const Grid<char>&); // nytt
+void animate(Grid<char>); // nytt
 
 int main() {
 
@@ -27,7 +30,8 @@ int main() {
         if (choice == 'a') {
             std::cout << "Animate pls" << std::endl;
         } else if (choice == 't') {
-            std::cout << "Tick pls" << std::endl;
+            grid = tick(grid);
+            displayGrid(grid);
         } else if (choice == 'q') {
             return 0;
         } else {
@@ -39,6 +43,64 @@ int main() {
 
 
     return 0;
+}
+
+// Prints the supplied grid to the terminal
+void displayGrid(const Grid<char> &grid) {
+    for (int y = 0; y < grid.numRows(); y++) {
+        for (int x = 0; x < grid.numCols(); x++) {
+            std::cout << grid.get(y, x);
+        }
+        std::cout << std::endl;
+    }
+    return;
+}
+
+
+int getNeighbours(const Grid<char> &grid, int origX, int origY) {
+    int neighbours = 0;
+
+    for (int y = -1; y < 1; y++) {
+        for (int x = -1; x < 1; x++) {
+            if ((x == 0 and y == 0) or !grid.inBounds(y + origY, x + origX)) {
+                continue;
+            }
+            if (grid.get(y + origY, x + origX) == 'X') {
+                neighbours++;
+            }
+        }
+    }
+    std::cout << grid.get(origY, origX) << " : " << neighbours << std::endl;
+    return neighbours;
+}
+
+// Calculates and updates 1 tick of the supplied grid
+Grid<char> tick(const Grid<char> &grid) {
+    Grid<char> nextGen = grid;
+
+    for (int y = 0; y < grid.numRows(); y++) {
+        for (int x = 0; x < grid.numCols(); x++) {
+            int neighbours = getNeighbours(grid, x, y);
+
+            char newValue = '-';
+            std::cout << neighbours<< std::endl;
+            if (neighbours == 3 or (neighbours == 2 and grid.get(y, x) == 'X')) {
+                std::cout << "ej"<< std::endl;
+                newValue = 'X';
+            }
+
+            nextGen.set(y, x, newValue);
+        }
+    }
+
+
+    return nextGen;
+}
+
+// Displays ticks until paused
+void animate(Grid<char> grid) {
+
+    return;
 }
 
 
@@ -70,7 +132,7 @@ Grid<char> readFile() {
     std::string line;
     int y = 0;
     while (getline(input, line) && (line.size() != 0)) {
-        for (int x = 0; x < grid.nCols - 1; x++) {
+        for (int x = 0; x < grid.numCols(); x++) {
             grid.set(y, x, line.at(x));
         }
         y++;
