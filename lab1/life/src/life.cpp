@@ -1,8 +1,8 @@
 /* filru737
  * youdr728
  * Conaway's game of life
- * Simulates bacteria generations following a set of basic rules.
- * User is allowed to choose file, tick or animate it.
+ *  - Simulates bacteria generations following a set of basic rules.
+ *  - User is allowed to choose file, tick or animate it.
  */
 #include <iostream>
 #include <fstream>
