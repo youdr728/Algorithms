@@ -1,7 +1,9 @@
-// This is the CPP file you will edit and turn in.
-// Also remove these comments here and add your own.
-// TODO: remove this comment header
-
+/* filru737
+ * youdr728
+ * Conaway's game of life
+ * Simulates bacteria generations following a set of basic rules.
+ * User is allowed to choose file, tick or animate it.
+ */
 #include <iostream>
 #include <fstream>
 #include "grid.h"
@@ -11,19 +13,17 @@
 void displayWelcome();
 Grid<char> readFile();
 char displayChoices();
-void displayGrid(const Grid<char>&); // nytt (const för att den inte ändras)
-Grid<char> tick(const Grid<char>&); // nytt
-void animate(Grid<char>&); // nytt
+void displayGrid(const Grid<char>&);
+Grid<char> tick(const Grid<char>&);
+void animate(Grid<char>&);
+
 
 int main() {
-
-    // TODO: Finish the program!
-
     displayWelcome();
 
     Grid<char> grid = readFile();
 
-    bool shouldLoop = true; // Renamed from "accepted"
+    bool shouldLoop = true;
     do {
         char choice = displayChoices();
         if (choice == 'a') {
@@ -51,24 +51,19 @@ void displayGrid(const Grid<char> &grid) {
     return;
 }
 
-
-int getNeighbours(const Grid<char> &grid, int origX, int origY) {
+// Counts the amount of X's neigbouring the (x, y) in grid
+int getNeighbours(const Grid<char> &grid, const int origX, const int origY) {
     int neighbours = 0;
 
     for (int y = -1; y <= 1; y++) {
-        for (int x = -1; x <= 1; x++) { // När det stod "x < 1" gick den bara [-1, 0]
-            if (x == 0 and y == 0) {
-                continue;
-            }
-            if (!grid.inBounds(y + origY, x + origX)) {
-                continue;
+        for (int x = -1; x <= 1; x++) {
+            if (!(x == 0 and y == 0) and grid.inBounds(y + origY, x + origX)) {
+                if (grid.get(y + origY, x + origX) == 'X') {
+                    neighbours++;
+                }
             }
 
-            if (grid.get(y + origY, x + origX) == 'X') {
-                neighbours++;
-            }
         }
-
     }
 
     return neighbours;
@@ -97,7 +92,6 @@ Grid<char> tick(const Grid<char> &grid) {
 
 // Displays ticks until paused
 void animate(Grid<char> &grid) {
-    std::string input;
     while (true) {
         clearConsole();
         grid = tick(grid);
@@ -106,7 +100,7 @@ void animate(Grid<char> &grid) {
     }
 }
 
-
+// Displays user choices
 char displayChoices() {
     std::string choice;
     std::cout << "a)nimate, t)ick, q)uit? ";
@@ -116,7 +110,7 @@ char displayChoices() {
     return choice.at(0);
 }
 
-
+// Asks the user for file and converts its contents to Grid<char>
 Grid<char> readFile() {
     std::string filename;
     std::cout << "Grid input file name? ";
@@ -129,6 +123,7 @@ Grid<char> readFile() {
 
     getline(input, rows);
     getline(input, columns);
+
 
     Grid<char> grid = Grid<char>(std::stoi(rows), std::stoi(columns));
 
@@ -146,7 +141,7 @@ Grid<char> readFile() {
     return grid;
 }
 
-
+// Displays the welcome message to the user
 void displayWelcome() {
     std::cout << "Welcome to the TDDD86 Game of Life,\n" << "a simulation of the lifecycle of a baceria colony. \n" <<
         "Cells (X) live and die by the following rules:\n" <<
