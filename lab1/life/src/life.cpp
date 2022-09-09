@@ -13,7 +13,7 @@ Grid<char> readFile();
 char displayChoices();
 void displayGrid(const Grid<char>&); // nytt (const för att den inte ändras)
 Grid<char> tick(const Grid<char>&); // nytt
-void animate(Grid<char>); // nytt
+void animate(Grid<char>&); // nytt
 
 int main() {
 
@@ -23,23 +23,18 @@ int main() {
 
     Grid<char> grid = readFile();
 
-    bool accepted;
+    bool shouldLoop = true; // Renamed from "accepted"
     do {
         char choice = displayChoices();
-        accepted = true;
         if (choice == 'a') {
-            std::cout << "Animate pls" << std::endl;
+            animate(grid);
         } else if (choice == 't') {
             grid = tick(grid);
             displayGrid(grid);
         } else if (choice == 'q') {
-            return 0;
-        } else {
-            accepted = false;
+            shouldLoop = false;
         }
-    } while (!accepted);
-
-
+    } while (shouldLoop);
 
 
     return 0;
@@ -60,17 +55,22 @@ void displayGrid(const Grid<char> &grid) {
 int getNeighbours(const Grid<char> &grid, int origX, int origY) {
     int neighbours = 0;
 
-    for (int y = -1; y < 1; y++) {
-        for (int x = -1; x < 1; x++) {
-            if ((x == 0 and y == 0) or !grid.inBounds(y + origY, x + origX)) {
+    for (int y = -1; y <= 1; y++) {
+        for (int x = -1; x <= 1; x++) { // När det stod "x < 1" gick den bara [-1, 0]
+            if (x == 0 and y == 0) {
                 continue;
             }
+            if (!grid.inBounds(y + origY, x + origX)) {
+                continue;
+            }
+
             if (grid.get(y + origY, x + origX) == 'X') {
                 neighbours++;
             }
         }
+
     }
-    std::cout << grid.get(origY, origX) << " : " << neighbours << std::endl;
+
     return neighbours;
 }
 
@@ -83,9 +83,7 @@ Grid<char> tick(const Grid<char> &grid) {
             int neighbours = getNeighbours(grid, x, y);
 
             char newValue = '-';
-            std::cout << neighbours<< std::endl;
             if (neighbours == 3 or (neighbours == 2 and grid.get(y, x) == 'X')) {
-                std::cout << "ej"<< std::endl;
                 newValue = 'X';
             }
 
@@ -98,9 +96,14 @@ Grid<char> tick(const Grid<char> &grid) {
 }
 
 // Displays ticks until paused
-void animate(Grid<char> grid) {
-
-    return;
+void animate(Grid<char> &grid) {
+    std::string input;
+    while (true) {
+        clearConsole();
+        grid = tick(grid);
+        displayGrid(grid);
+        pause(100);
+    }
 }
 
 
