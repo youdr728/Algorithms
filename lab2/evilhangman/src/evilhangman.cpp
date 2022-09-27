@@ -14,29 +14,13 @@ const string ALPHABET  = "abcdefghijklmnopqrstuvwxyz";
 
 string encodeString(const char, const string);
 unordered_set<string> readDictionary(const unsigned int);
-unordered_map<string, unordered_set<string>> categorizeDictionary(const unordered_set<string>&, const char); // Make unordered_set a reference
+unordered_map<string, unordered_set<string>> categorizeDictionary(const unordered_set<string>&, const char);
 unordered_set<string> getLargestFamily(const unordered_map<string, unordered_set<string>>&, string&);
 bool displayEndscreen(bool won, string correctWord);
-
-// KOMMENTARER (högst upp & metoder
-// Bryt upp i mindre funktioner
 
 
 int main() {
     bool playAgain = true;
-
-    /*
-     * while (playAgain)
-     *      displayIntro()
-     *      createDictionary() // Takes all relevant input for the dictionary
-     *      while (!won) // and guesses remain
-     *          guessWord()
-     *          categorizeDictionary()
-     *          getLargestFamily()
-     *          displayCurrentGuess()
-     *          displayInfo()
-     *          // decide if they won
-     */
 
     while (playAgain) {
         system("clear");
@@ -86,7 +70,7 @@ int main() {
             unordered_map<string, unordered_set<string>> families = categorizeDictionary(dictionary, guess);
 
             string encoding;
-            dictionary = getLargestFamily(families, encoding);
+            dictionary = getLargestFamily(families, encoding); // Update encoding & dictionary to have the largest family
 
             system("clear"); // clears "Please wait..."
 
@@ -102,7 +86,7 @@ int main() {
             // Decide if player has won or not
             won = dictionary.size() == 1 && *dictionary.begin() == guessedWord;
 
-            if (!correctGuess) { // decide if guesses left should decrease
+            if (!correctGuess) { // decide if guesses_left should decrease
                 guessCounter++;
             }
             cout << guessedWord << " : " << desiredGuesses - guessCounter << " remaining guesses."<< endl;
