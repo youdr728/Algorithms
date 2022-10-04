@@ -1,8 +1,8 @@
-// This is the .h file you will edit and turn in.
-// We have provided a skeleton for you,
-// but you must finish it as described in the spec.
-// Also remove these comments here and add your own, as well as on the members.
-// TODO: remove this comment header
+/* Filip Runo - filru737
+ * Yousef Drgham - youdr728
+ * -------
+ * Class to manage points in a tour.
+ */
 
 #ifndef TOUR_H
 #define TOUR_H
@@ -11,20 +11,30 @@
 #include "Point.h"
 
 class Tour {
-    Node* first;
 public:
     Tour();
-    Tour(Point a, Point b, Point c, Point d);
     ~Tour();
-    void show();
-    void draw(QGraphicsScene* scene);
-    int size();
-    double distance();
-    void insertNearest(Point p);
-    void insertSmallest(Point p);
+
+    // Prints all points in the tour
+    void show() const;
+
+    // Draws lines between all points in the tour
+    void draw(QGraphicsScene* scene) const;
+
+    // Returns the number of points in tour
+    int size() const;
+
+    // Returns the total distance of the tour
+    double distance() const;
+
+    // Inserts the point p to the point which is closest to it
+    void insertNearest(const Point p);
+
+    // Inserts the point p using the smallest increase heuristic
+    void insertSmallest(const Point p);
 
 private:
-
+    Node* first = nullptr;
 };
 
 #endif // TOUR_H

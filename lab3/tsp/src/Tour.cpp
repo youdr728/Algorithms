@@ -11,31 +11,25 @@
 
 Tour::Tour()
 {
-    // TODO: write this member
-}
 
-Tour::Tour(Point a, Point b, Point c, Point d) {
-
-    cout << a << b << c << d << endl;
-
-    Node* four = new Node(d);
-    Node* three = new Node(c, four);
-    Node* two = new Node(b, three);
-    Node* one = new Node(a, two);
-    four->next = one;
-
-    first = one;
 }
 
 Tour::~Tour()
 {
-    // TODO: write this member
-    // Iterate through entire list and destroy each member
+    if (first != nullptr){
+        Node* current = first->next;
+        while (current != first) {
+            Node* nextNode = current->next;
+            Node* temp = current;
+            current = nextNode;
+            delete temp;
+        }
+        delete first;
+    }
 }
 
-void Tour::show()
+void Tour::show() const
 {
-    // TODO: write this member
     Node* current = first;
     if (current != nullptr) {
         do {
@@ -43,10 +37,9 @@ void Tour::show()
             current = current->next;
         } while (current != nullptr && current != first);
     }
-    cout << "----- DISPLAYED -----" << endl;
 }
 
-void Tour::draw(QGraphicsScene *scene)
+void Tour::draw(QGraphicsScene *scene) const
 {
     Node* current = first;
     if (current != nullptr) {
@@ -57,7 +50,7 @@ void Tour::draw(QGraphicsScene *scene)
     }
 }
 
-int Tour::size()
+int Tour::size() const
 {
     int counter = 0;
 
@@ -72,7 +65,7 @@ int Tour::size()
     return counter;
 }
 
-double Tour::distance()
+double Tour::distance() const
 {
     double tourDistance = 0;
     Node* current = first;
@@ -86,25 +79,27 @@ double Tour::distance()
     return tourDistance;
 }
 
-void Tour::insertNearest(Point p)
+void Tour::insertNearest(const Point p)
 {
     Node* current = first;
     if (current != nullptr) {
         double shortestDistance = first->point.distanceTo(p);
         Node* nearestNode = first;
         current = first->next;
-        do {
-            cout << "Distance pls?" << endl;
-            double currentShortest = current->point.distanceTo(p);
-            cout << currentShortest << endl;
-            if (currentShortest < shortestDistance) {
-                nearestNode = current;
 
-                //Node* oldNext = nearestNode->next;
-               // nearestNode->next = new Node(p, oldNext);
+        double shortestNext = first->next->point.distanceTo(p);
+
+        do {
+            double currentDistance = current->point.distanceTo(p);
+            if (currentDistance < shortestDistance || (currentDistance == shortestDistance && current->next->point.distanceTo(p) < shortestNext)) {
+                nearestNode = current;
+                shortestDistance = currentDistance;
             }
             current = current->next;
+
         } while (current != nullptr && current != first);
+        Node* oldNext = nearestNode->next;
+        nearestNode->next = new Node(p, oldNext);
 
 
     } else {
@@ -113,7 +108,32 @@ void Tour::insertNearest(Point p)
     }
 }
 
-void Tour::insertSmallest(Point p)
+void Tour::insertSmallest(const Point p)
 {
-    // TODO: write this member
+    Node* current = first;
+    if (current != nullptr) {
+        double shortestDistance = first->point.distanceTo(p) + p.distanceTo(first->next->point) - first->point.distanceTo(first->next->point);
+        Node* nearestNode = first;
+        current = first->next;
+
+        do {
+            double currentDistance = current->point.distanceTo(current->next->point);
+            double newDistance = current->point.distanceTo(p) + p.distanceTo(current->next->point);
+            double delta = newDistance - currentDistance;
+
+            if (delta < shortestDistance) {
+                nearestNode = current;
+                shortestDistance = delta;
+            }
+            current = current->next;
+
+        } while (current != nullptr && current != first);
+        Node* oldNext = nearestNode->next;
+        nearestNode->next = new Node(p, oldNext);
+
+
+    } else {
+        first = new Node(p);
+        first->next = first;
+    }
 }
