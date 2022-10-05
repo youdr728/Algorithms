@@ -16,7 +16,7 @@ string encodeString(const char, const string);
 unordered_set<string> readDictionary(const unsigned int);
 unordered_map<string, unordered_set<string>> categorizeDictionary(const unordered_set<string>&, const char);
 unordered_set<string> getLargestFamily(const unordered_map<string, unordered_set<string>>&, string&);
-bool displayEndscreen(bool won, string correctWord);
+bool displayEndscreen(const bool won, const string correctWord);
 
 
 int main() {
@@ -125,7 +125,7 @@ string encodeString(const char letter, const string from) {
 }
 
 // Reads file and converts it into a dictionary. Only keeps words of correct size.
-unordered_set<string> readDictionary(unsigned int wordLength) {
+unordered_set<string> readDictionary(const unsigned int wordLength) {
     unordered_set<string> dictionary;
     ifstream input;
     input.open("dictionary.txt");
@@ -176,7 +176,7 @@ unordered_set<string> getLargestFamily(const unordered_map<string, unordered_set
 }
 
 // Displays won/loss message, "correct" word and asks if user wants to play again.
-bool displayEndscreen(bool won, string correctWord) {
+bool displayEndscreen(const bool won, const string correctWord) {
     if (won) {
         cout << "You won!" << endl;
     } else {
