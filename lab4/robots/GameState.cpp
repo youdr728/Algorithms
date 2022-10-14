@@ -12,22 +12,24 @@
 
 GameState::GameState(int numberOfRobots) {
    for (int i = 0; i < numberOfRobots; i++) {
-//        Robot robot;
-//        while(!isEmpty(robot)) {
-//            robot = Robot();
-//        }
-        robots.push_back(new Robot());
+        Robot *robot = new Robot();
+        while(!isEmpty(*robot)) {
+            delete robot;
+            robot = new Robot();
+        }
+        robots.push_back(robot);
     }
-    teleportHero();
+   std::cout << "(gamestate.cpp) ----------------- " << numberOfRobots << std::endl;
+   teleportHero();
 }
 
-GameState::~GameState() {
-    std::cout << "Deconstructing" << std::endl;
-    for (int i = robots.size(); i >= 0; i--) {
-        std::cout << "Deleting Robots[" << i << "]" << std::endl;
-        robots.pop_back();
-    }
-}
+//GameState::~GameState() {
+//    // När ny bana skapas kallas dekonstruktorn på den nya för någon anledning.
+//    std::cout << "(gamestate.cpp) ~" << robots.size() << std::endl;
+//    for (Robot* robot : robots) {
+//        delete robot;
+//    }
+//}
 
 void GameState::draw(QGraphicsScene *scene) const {
     scene->clear();
@@ -99,7 +101,7 @@ bool GameState::stillLiveRobots() const {
 bool GameState::heroDead() const {
     for(const Robot* robot: robots){
         if(hero.at(*robot)){
-            std::cout << "---------------------" << std::endl;
+            std::cout << "(gamestate.cpp) ------ Hero died ------" << std::endl;
             return true;
         }
     }

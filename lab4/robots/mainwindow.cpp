@@ -5,6 +5,7 @@
  */
 
 #include <algorithm>
+#include <iostream>
 #include "mainwindow.h"
 #include "Hero.h"
 #include "Robot.h"
@@ -162,7 +163,9 @@ void MainWindow::processMove(bool waiting) {
         gameOverWindow.show();
     }else if(!gameState.stillLiveRobots()) { // won level
         numberOfRobots = std::min(MAX_ROBOTS, numberOfRobots + ROBOTS_INC);
+        std::cout << "(mainwindow.cpp) Changing to " << numberOfRobots << std::endl;
         gameState = GameState(numberOfRobots);
+        std::cout << "(mainwindow.cpp) Changed" << std::endl;
         gameState.draw(scene);
         ++level;
         displayLevel();
