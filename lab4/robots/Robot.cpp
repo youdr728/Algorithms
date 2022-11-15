@@ -6,6 +6,12 @@
 #include "Robot.h"
 #include "constants.h"
 
+
+Robot* Robot::clone() {
+    return new Robot(this->asPoint());
+}
+
+
 bool Robot::canMove() const{
     return !crashed;
 }

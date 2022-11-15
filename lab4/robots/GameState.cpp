@@ -23,13 +23,30 @@ GameState::GameState(int numberOfRobots) {
    teleportHero();
 }
 
-//GameState::~GameState() {
-//    // När ny bana skapas kallas dekonstruktorn på den nya för någon anledning.
-//    std::cout << "(gamestate.cpp) ~" << robots.size() << std::endl;
-//    for (Robot* robot : robots) {
-//        delete robot;
-//    }
-//}
+GameState& GameState::operator=(GameState replacement) {
+    std::cout << "Copying :)" << std::endl;
+    for (Robot* robot : robots) {
+        delete robot;
+    }
+
+    robots.clear();
+
+    for (Robot* robot : replacement.robots) {
+        robots.push_back(robot->clone());
+    }
+
+    this->hero = replacement.hero;
+
+    return *this;
+}
+
+GameState::~GameState() {
+    // När ny bana skapas kallas dekonstruktorn på den nya för någon anledning.
+    std::cout << "(gamestate.cpp) ~" << robots.size() << std::endl;
+    for (Robot* robot : robots) {
+        delete robot;
+    }
+}
 
 void GameState::draw(QGraphicsScene *scene) const {
     scene->clear();

@@ -5,6 +5,10 @@
  * Maintains the game state:  Location of all robots, junk and hero.
  */
 
+/* Filru737
+ * Youdr728
+ */
+
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
@@ -25,7 +29,9 @@ public:
      */
     GameState(int numberOfRobots);
 
-    ~GameState() = default;
+    GameState& operator=(GameState orig);
+
+    ~GameState();// = default;
 
 
     /*

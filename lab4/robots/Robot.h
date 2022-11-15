@@ -21,6 +21,11 @@ public:
     ~Robot() = default;
 
     /*
+     * Returns an identical robot
+     */
+    Robot* clone();
+
+    /*
      * did not crash yet
      */
     virtual bool canMove() const;
