@@ -9,7 +9,8 @@
 
 #include <iostream>
 #include <string>
-#include <vector>
+#include <lexicon.h>
+#include <grid.h>
 // TODO: include any other header files you need
 
 using namespace std;
@@ -26,11 +27,16 @@ public:
     Boggle(); // Randomly generate board
     Boggle(string board); // Start with specified board
 
+    void displayBoard();
+    void shuffleBoard();
+    void makeGuess(string guess);
+
 private:
     // TODO: decide the private member variables/functions and declare them
-    std::vector<string> cubes = std::vector<string>();
+    Grid<string> cubes;
+    Lexicon lexicon = Lexicon(DICTIONARY_FILE);
 
-    void createBoard();
+    void createBoard(string);
 };
 
 #endif
