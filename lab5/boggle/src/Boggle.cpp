@@ -56,11 +56,43 @@ void Boggle::shuffleBoard() {
     shuffle(cubes);
 }
 
+bool Boggle::containsWord(string word) {
+    for (int x = 0; x < cubes.nCols; x++) {
+        for (int y = 0; y < cubes.nRows; y++) {
+            if (cubes.get(y, x)[0] == word[0]) {
+                Point origin = Point(x, y);
+                Map<int, int> visited = Map<int, int>();
+                if (findWord(origin, word.substr(1), visited)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
 
-void Boggle::makeGuess(string guess) {
-//    if () {
 
-//    }
+bool Boggle::logGuess(string newGuess) {
+    if (newGuess.length() < MIN_WORD_LENGTH || !containsWord(newGuess)) {
+        return false;
+    }
+
+    string prefix = string(1, newGuess[0]);
+    Vector<string> relevantVector = guesses.get(prefix);
+
+    for (auto guess : relevantVector) {
+        if (guess == newGuess) {
+            return false;
+        }
+    }
+
+    if (!lexicon.contains(newGuess)) {
+        return false;
+    }
+
+    relevantVector.add(newGuess);
+    guesses.put(prefix, relevantVector);
+    return true;
 }
 
 
@@ -94,3 +126,31 @@ void Boggle::createBoard(string forced) {
     }
 }
 
+
+bool Boggle::findWord(Point origin, string word, Map<int, int>& visited) {
+    visited.put(origin.x, origin.y);
+    for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+            Point poi = Point(origin.x + dx, origin.y + dy);
+            //std::cout << "(" << poi.x << ", " << poi.y << ")" << std::endl;
+            if (cubes.inBounds(poi.y, poi.x) && cubes.get(poi.y, poi.x)[0] == word[0]) {
+                //std::cout << "found at " << "(" << poi.x << ", " << poi.y << ")" << std::endl;
+                return findWord(poi, word.substr(1), visited);
+            }
+        }
+    }
+    return word == "";
+}
+
+
+//bool Boggle::followTrail(Point origin, Point direction, string word) {
+//    Point poi = origin + direction; // Point Of Interest
+//    std::cout << "(" << poi.x << ", " << ")" << std::endl;
+//    if (cubes.inBounds(poi.y, poi.x)) {
+//        if (cubes.get(poi.y, poi.x) == string(1, word[0])) {
+//            return followTrail(origin + direction, direction, word.substr(1));
+//        }
+//    }
+
+//    return false;
+//}

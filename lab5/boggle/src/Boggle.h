@@ -11,6 +11,7 @@
 #include <string>
 #include <lexicon.h>
 #include <grid.h>
+#include <vector.h>
 // TODO: include any other header files you need
 
 using namespace std;
@@ -29,14 +30,25 @@ public:
 
     void displayBoard();
     void shuffleBoard();
-    void makeGuess(string guess);
+    bool containsWord(string word);
+    bool logGuess(string guess);
 
 private:
     // TODO: decide the private member variables/functions and declare them
+    struct Point {
+        int x;
+        int y;
+        Point(int x, int y) {
+            this->x = x;
+            this->y = y;
+        };
+    };
     Grid<string> cubes;
     Lexicon lexicon = Lexicon(DICTIONARY_FILE);
+    Map<string, Vector<string>> guesses = Map<string, Vector<string>>();
 
     void createBoard(string);
+    bool findWord(Point origin, string word, Map<int, int>& visited);
 };
 
 #endif

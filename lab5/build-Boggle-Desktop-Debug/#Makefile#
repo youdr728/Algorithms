@@ -55,6 +55,7 @@ OBJECTS_DIR   = ./
 SOURCES       = ../boggle/src/Boggle.cpp \
 		../boggle/src/bogglemain.cpp \
 		../boggle/src/boggleplay.cpp \
+		src/Point.cpp \
 		../boggle/lib/StanfordCPPLib/error.cpp \
 		../boggle/lib/StanfordCPPLib/lexicon.cpp \
 		../boggle/lib/StanfordCPPLib/random.cpp \
@@ -165,6 +166,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../boggle/Boggle.pro ../boggle/src/Boggle.h \
 		../boggle/src/bogglemain.h \
 		../boggle/src/shuffle.h \
+		src/Point.h \
 		../boggle/lib/StanfordCPPLib/error.h \
 		../boggle/lib/StanfordCPPLib/foreach.h \
 		../boggle/lib/StanfordCPPLib/grid.h \
@@ -400,8 +402,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../boggle/src/Boggle.h ../boggle/src/bogglemain.h ../boggle/src/shuffle.h ../boggle/lib/StanfordCPPLib/error.h ../boggle/lib/StanfordCPPLib/foreach.h ../boggle/lib/StanfordCPPLib/grid.h ../boggle/lib/StanfordCPPLib/lexicon.h ../boggle/lib/StanfordCPPLib/map.h ../boggle/lib/StanfordCPPLib/random.h ../boggle/lib/StanfordCPPLib/set.h ../boggle/lib/StanfordCPPLib/simpio.h ../boggle/lib/StanfordCPPLib/stack.h ../boggle/lib/StanfordCPPLib/strlib.h ../boggle/lib/StanfordCPPLib/vector.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../boggle/src/Boggle.cpp ../boggle/src/bogglemain.cpp ../boggle/src/boggleplay.cpp ../boggle/lib/StanfordCPPLib/error.cpp ../boggle/lib/StanfordCPPLib/lexicon.cpp ../boggle/lib/StanfordCPPLib/random.cpp ../boggle/lib/StanfordCPPLib/simpio.cpp ../boggle/lib/StanfordCPPLib/strlib.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../boggle/src/Boggle.h ../boggle/src/bogglemain.h ../boggle/src/shuffle.h src/Point.h ../boggle/lib/StanfordCPPLib/error.h ../boggle/lib/StanfordCPPLib/foreach.h ../boggle/lib/StanfordCPPLib/grid.h ../boggle/lib/StanfordCPPLib/lexicon.h ../boggle/lib/StanfordCPPLib/map.h ../boggle/lib/StanfordCPPLib/random.h ../boggle/lib/StanfordCPPLib/set.h ../boggle/lib/StanfordCPPLib/simpio.h ../boggle/lib/StanfordCPPLib/stack.h ../boggle/lib/StanfordCPPLib/strlib.h ../boggle/lib/StanfordCPPLib/vector.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../boggle/src/Boggle.cpp ../boggle/src/bogglemain.cpp ../boggle/src/boggleplay.cpp src/Point.cpp ../boggle/lib/StanfordCPPLib/error.cpp ../boggle/lib/StanfordCPPLib/lexicon.cpp ../boggle/lib/StanfordCPPLib/random.cpp ../boggle/lib/StanfordCPPLib/simpio.cpp ../boggle/lib/StanfordCPPLib/strlib.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -492,6 +494,9 @@ boggleplay.o: ../boggle/src/boggleplay.cpp ../boggle/src/Boggle.h \
 		../boggle/lib/StanfordCPPLib/grid.h \
 		../boggle/src/bogglemain.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o boggleplay.o ../boggle/src/boggleplay.cpp
+
+Point.o: src/Point.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Point.o src/Point.cpp
 
 error.o: ../boggle/lib/StanfordCPPLib/error.cpp ../boggle/lib/StanfordCPPLib/error.h \
 		../boggle/lib/StanfordCPPLib/private/main.h

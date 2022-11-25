@@ -1,7 +1,8 @@
 QT += widgets
 SOURCES = $$PWD/src/*.cpp
 #SOURCES += $$PWD/lib/*.cpp
-HEADERS = $$PWD/src/*.h
+HEADERS = $$PWD/src/*.h \
+    src/Point_copy.h
 #HEADERS += $$PWD/lib/*.h
 
 QMAKE_CXXFLAGS += -std=c++11

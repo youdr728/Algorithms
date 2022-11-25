@@ -17,7 +17,9 @@
 
 void playOneGame(Boggle& boggle) {
     // TODO: implement this function (and add any other functions you like to help you)
-
+    std::cout << "Hello: " << boggle.logGuess("hello") << std::endl;
+    std::cout << "Himan: " << boggle.logGuess("himan") << std::endl;
+    std::cout << "Hello: " << boggle.logGuess("hello") << std::endl;
 }
 
 void createBoard() {
