@@ -27,13 +27,14 @@ int main() {
     intro();
 
     // play games repeatedly until user decides to quit
-    Boggle boggle = Boggle("hellnmyoameisjac");
+    Boggle boggle = Boggle("FYCLIOMGORILHJHU");
     while (true) {
         playOneGame(boggle);
         cout << endl;
         if (!yesOrNo("Play again (Y/N)? ")) {
             break;
         }
+        boggle.shuffleBoard();
     }
 
     cout << "Have a nice day." << endl;

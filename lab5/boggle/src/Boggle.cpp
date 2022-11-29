@@ -10,6 +10,7 @@
 #include "shuffle.h"
 #include "strlib.h"
 #include <grid.h>
+#include <algorithm>
 
 static const int NUM_CUBES = 16;   // the number of cubes in the game
 static const int CUBE_SIDES = 6;   // the number of sides on each cube
@@ -23,13 +24,11 @@ static string CUBES[NUM_CUBES] = {        // the letters on all 6 sides of every
 // Creates a randomized starting board
 Boggle::Boggle() {
     createBoard("");
-    displayBoard();
 }
 
 // Creates a forced starting board
 Boggle::Boggle(string forcedBoard) {
     createBoard(forcedBoard);
-    displayBoard();
 }
 
 // TODO: implement the members you declared in Boggle.h
@@ -73,7 +72,10 @@ bool Boggle::containsWord(string word) {
 
 
 bool Boggle::logGuess(string newGuess) {
+    // To uppercase https://stackoverflow.com/questions/735204/convert-a-string-in-c-to-upper-case
+    std::transform(newGuess.begin(), newGuess.end(),newGuess.begin(), ::toupper);
     if (newGuess.length() < MIN_WORD_LENGTH || !containsWord(newGuess)) {
+        //std::cout << "invalid" << std::endl;
         return false;
     }
 
@@ -82,16 +84,21 @@ bool Boggle::logGuess(string newGuess) {
 
     for (auto guess : relevantVector) {
         if (guess == newGuess) {
+            //std::cout << "Already guessed" << std::endl;
             return false;
         }
     }
 
     if (!lexicon.contains(newGuess)) {
+        //std::cout << "Invalid word" << std::endl;
         return false;
     }
 
     relevantVector.add(newGuess);
     guesses.put(prefix, relevantVector);
+    score++;
+    //std::cout << "Valid" << std::endl;
+
     return true;
 }
 
@@ -129,13 +136,16 @@ void Boggle::createBoard(string forced) {
 
 bool Boggle::findWord(Point origin, string word, Map<int, int>& visited) {
     visited.put(origin.x, origin.y);
+    //std::cout << word << std::endl;
     for (int dx = -1; dx <= 1; dx++) {
         for (int dy = -1; dy <= 1; dy++) {
             Point poi = Point(origin.x + dx, origin.y + dy);
             //std::cout << "(" << poi.x << ", " << poi.y << ")" << std::endl;
             if (cubes.inBounds(poi.y, poi.x) && cubes.get(poi.y, poi.x)[0] == word[0]) {
                 //std::cout << "found at " << "(" << poi.x << ", " << poi.y << ")" << std::endl;
-                return findWord(poi, word.substr(1), visited);
+                if (findWord(poi, word.substr(1), visited)) {
+                    return true;
+                }
             }
         }
     }
