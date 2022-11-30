@@ -31,6 +31,8 @@ void playOneGame(Boggle& boggle) {
     }
 
     printScore(boggle.score);
+    boggle.displayUserGuesses();
+    boggle.findAllWords();
 }
 
 

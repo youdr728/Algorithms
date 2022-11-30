@@ -22,6 +22,7 @@ public:
     const int MIN_WORD_LENGTH = 4;
     const int BOARD_SIZE = 4;
     int score = 0;
+    int computerScore = 0;
 
 
     // TODO: decide the public member functions and declare them
@@ -33,6 +34,8 @@ public:
     void shuffleBoard();
     bool containsWord(string word);
     bool logGuess(string guess);
+    void displayUserGuesses();
+    void findAllWords();
 
 private:
     // TODO: decide the private member variables/functions and declare them
@@ -46,10 +49,13 @@ private:
     };
     Grid<string> cubes;
     Lexicon lexicon = Lexicon(DICTIONARY_FILE);
-    Map<string, Vector<string>> guesses = Map<string, Vector<string>>();
+    Lexicon guesses = Lexicon();
+    Lexicon computerGuesses = Lexicon();
+
 
     void createBoard(string);
-    bool findWord(Point origin, string word, Map<int, int>& visited);
+    bool findWord(Point origin, string word, Map<int, Set<int>> visited);
+    void findAllWordsFromPoint(Point origin, string currentWord, Map<int, Set<int>> visited);
 };
 
 #endif

@@ -55,12 +55,24 @@ void Boggle::shuffleBoard() {
     shuffle(cubes);
 }
 
+void Boggle::displayUserGuesses() {
+    string userGuesses = "";
+    int wordCount = 0;
+
+    for (auto word : guesses) {
+        userGuesses += "\"" + word + "\", ";
+        wordCount++;
+    }
+
+    std::cout << "Your words (" << wordCount << "): { " << userGuesses << "}" << std::endl;
+}
+
 bool Boggle::containsWord(string word) {
     for (int x = 0; x < cubes.nCols; x++) {
         for (int y = 0; y < cubes.nRows; y++) {
             if (cubes.get(y, x)[0] == word[0]) {
                 Point origin = Point(x, y);
-                Map<int, int> visited = Map<int, int>();
+                Map<int, Set<int>> visited = Map<int, Set<int>>();
                 if (findWord(origin, word.substr(1), visited)) {
                     return true;
                 }
@@ -74,29 +86,17 @@ bool Boggle::containsWord(string word) {
 bool Boggle::logGuess(string newGuess) {
     // To uppercase https://stackoverflow.com/questions/735204/convert-a-string-in-c-to-upper-case
     std::transform(newGuess.begin(), newGuess.end(),newGuess.begin(), ::toupper);
-    if (newGuess.length() < MIN_WORD_LENGTH || !containsWord(newGuess)) {
-        //std::cout << "invalid" << std::endl;
+    if (newGuess.length() < MIN_WORD_LENGTH || guesses.contains(newGuess) || !lexicon.contains(newGuess)) {
         return false;
     }
 
-    string prefix = string(1, newGuess[0]);
-    Vector<string> relevantVector = guesses.get(prefix);
-
-    for (auto guess : relevantVector) {
-        if (guess == newGuess) {
-            //std::cout << "Already guessed" << std::endl;
-            return false;
-        }
-    }
-
-    if (!lexicon.contains(newGuess)) {
-        //std::cout << "Invalid word" << std::endl;
+    if (!containsWord(newGuess)) {
         return false;
     }
 
-    relevantVector.add(newGuess);
-    guesses.put(prefix, relevantVector);
-    score++;
+    guesses.add(newGuess);
+
+    score += newGuess.length() - 3; // Award one point per letter (only for letter #4 & up)
     //std::cout << "Valid" << std::endl;
 
     return true;
@@ -134,22 +134,87 @@ void Boggle::createBoard(string forced) {
 }
 
 
-bool Boggle::findWord(Point origin, string word, Map<int, int>& visited) {
-    visited.put(origin.x, origin.y);
-    //std::cout << word << std::endl;
-    for (int dx = -1; dx <= 1; dx++) {
-        for (int dy = -1; dy <= 1; dy++) {
-            Point poi = Point(origin.x + dx, origin.y + dy);
-            //std::cout << "(" << poi.x << ", " << poi.y << ")" << std::endl;
-            if (cubes.inBounds(poi.y, poi.x) && cubes.get(poi.y, poi.x)[0] == word[0]) {
-                //std::cout << "found at " << "(" << poi.x << ", " << poi.y << ")" << std::endl;
-                if (findWord(poi, word.substr(1), visited)) {
-                    return true;
-                }
-            }
+void Boggle::findAllWords() {
+    for (int x = 0; x < cubes.nCols; x++) {
+        for (int y = 0; y < cubes.nRows; y++) {
+            Map<int, Set<int>> visited = Map<int, Set<int>>();
+            findAllWordsFromPoint(Point(x, y), string(1, cubes.get(y, x)[0]), visited);
         }
     }
-    return word == "";
+    string words = "";
+    int wordCount = 0;
+
+    for (auto word : computerGuesses) {
+        words += "\"" + word + "\", ";
+        wordCount++;
+    }
+
+    std::cout << "My words (" << wordCount << "): { " << words << "}" << std::endl;
+    std::cout << "My score: " << computerScore << std::endl;
+}
+
+
+void Boggle::findAllWordsFromPoint(Point origin, string currentWord, Map<int, Set<int>> visited) {
+    if (!lexicon.containsPrefix(currentWord)) {
+        return;
+    }
+    else if(currentWord.length() >= MIN_WORD_LENGTH && lexicon.contains(currentWord) && !guesses.contains(currentWord) && !computerGuesses.contains(currentWord)){
+        computerGuesses.add(currentWord);
+        computerScore += currentWord.length() - 3;
+    }
+
+    Set<int> relevantSet = visited.get(origin.x);
+    relevantSet.add(origin.y);
+    visited.put(origin.x, relevantSet); // Add origin to the list of visited points
+
+    for (int dx = -1; dx <= 1; dx++) {
+        Set<int> coi = visited.get(origin.x + dx); // Column of interest
+        for (int dy = -1; dy <= 1; dy++) {
+            Point poi = Point(origin.x + dx, origin.y + dy);
+
+            // If in bounds && not visited
+            if (cubes.inBounds(poi.y, poi.x) && !coi.contains(poi.y)) {
+                findAllWordsFromPoint(poi, currentWord+cubes.get(poi.y, poi.x)[0], visited);
+            }
+
+        }
+    }
+    return;
+}
+
+
+
+// Replace Map<int, int> with point container (can only track one x for each y at a time)
+bool Boggle::findWord(Point origin, string word, Map<int, Set<int>> visited) { // re-introduce &
+    if (word == "") {
+        return true; // If all letters were able to be found, return true
+    }
+
+    Set<int> relevantSet = visited.get(origin.x);
+    relevantSet.add(origin.y);
+    visited.put(origin.x, relevantSet); // Add origin to the list of visited points
+
+
+    for (int dx = -1; dx <= 1; dx++) { // Loop through all neighbors of the origin
+        for (int dy = -1; dy <= 1; dy++) {
+            Point poi = Point(origin.x + dx, origin.y + dy); // Get point of interest(cube to examine)
+
+            if (cubes.inBounds(poi.y, poi.x)) { // If it has't been visited
+
+                if (!visited.get(poi.x).contains(poi.y) && cubes.get(poi.y, poi.x)[0] == word[0]) { // If POI exists inside the cube && cube is the next letter in the word
+                    if (findWord(poi, word.substr(1), visited)) { // Create a "branch" to search for the word. If it finds the word, abort all other loops, else examine others
+                        return true;
+                    }
+                    else {
+                        // remove whatever was added pls
+                        //visited.get(poi.x).remove(poi.y);
+                    }
+                }
+            }
+
+        }
+    }
+    return false;
 }
 
 
