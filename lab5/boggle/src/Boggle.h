@@ -30,6 +30,7 @@ public:
     Boggle(); // Randomly generate board
     Boggle(string board); // Start with specified board
 
+    void prepareBoard(string forcedBoard  = "");
     void displayBoard();
     void shuffleBoard();
     bool containsWord(string word);
@@ -53,9 +54,10 @@ private:
     Lexicon computerGuesses = Lexicon();
 
 
-    void createBoard(string);
+    void createBoard(string forcedBoard = "");
     bool findWord(Point origin, string word, Map<int, Set<int>> visited);
     void findAllWordsFromPoint(Point origin, string currentWord, Map<int, Set<int>> visited);
+    void toUpperCase(string& text);
 };
 
 #endif

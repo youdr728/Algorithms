@@ -12,8 +12,8 @@
 #include <grid.h>
 #include <algorithm>
 
-static const int NUM_CUBES = 16;   // the number of cubes in the game
 static const int CUBE_SIDES = 6;   // the number of sides on each cube
+static const int NUM_CUBES = 16;   // the number of cubes in the game
 static string CUBES[NUM_CUBES] = {        // the letters on all 6 sides of every cube
    "AAEEGN", "ABBJOO", "ACHOPS", "AFFKPS",
    "AOOTTW", "CIMOTU", "DEILRX", "DELRVY",
@@ -21,19 +21,38 @@ static string CUBES[NUM_CUBES] = {        // the letters on all 6 sides of every
    "EIOSST", "ELRTTY", "HIMNQU", "HLNNRZ"
 };
 
-// Creates a randomized starting board
+/*
+ * Creates a randomized starting board
+ */
 Boggle::Boggle() {
     createBoard("");
 }
 
-// Creates a forced starting board
+/*
+ * Creates a forced starting board
+ */
 Boggle::Boggle(string forcedBoard) {
     createBoard(forcedBoard);
 }
 
-// TODO: implement the members you declared in Boggle.h
+/*
+ * Resets scores, empties guessed words & can shuffles board
+ */
+void Boggle::prepareBoard(string forcedBoard) {
+    if (forcedBoard.length() == NUM_CUBES) {
+        createBoard(forcedBoard); // Overwrite current board
+    } else {
+        shuffleBoard(); // No need to re-create it, just shuffle
+    }
+    guesses = Lexicon(); // Empty user guesses
+    computerGuesses = Lexicon(); // Empty computer guesses
+    score = 0; // Reset score
+    computerScore = 0;
+}
 
-// Displays the board
+/*
+ * Prints the board
+ */
 void Boggle::displayBoard() {
     for (int x = 0; x < cubes.nCols; x++) {
         for (int y = 0; y < cubes.nRows; y++) {
@@ -44,7 +63,9 @@ void Boggle::displayBoard() {
     std::cout << "\n" << std::endl;
 }
 
-// Shuffles the board ("rolls" dice and reorganizes them)
+/*
+ * Shuffles the board ("rolls" dice and reorganizes them)
+ */
 void Boggle::shuffleBoard() {
     for (auto cube : cubes) {
         char temp = cube[0];
@@ -55,6 +76,9 @@ void Boggle::shuffleBoard() {
     shuffle(cubes);
 }
 
+/*
+ * Prints the users guesses in the form "Your words (wordcount): { <guesses> }"
+ */
 void Boggle::displayUserGuesses() {
     string userGuesses = "";
     int wordCount = 0;
@@ -67,6 +91,9 @@ void Boggle::displayUserGuesses() {
     std::cout << "Your words (" << wordCount << "): { " << userGuesses << "}" << std::endl;
 }
 
+/*
+ * Starts the function findWord for each point on the grid (until word is found)
+ */
 bool Boggle::containsWord(string word) {
     for (int x = 0; x < cubes.nCols; x++) {
         for (int y = 0; y < cubes.nRows; y++) {
@@ -82,15 +109,18 @@ bool Boggle::containsWord(string word) {
     return false;
 }
 
-
+/*
+ * Checks if the guess is valid & not already guessed and adds it to the users guesses if valid. Returns whether it added it or not
+ */
 bool Boggle::logGuess(string newGuess) {
-    // To uppercase https://stackoverflow.com/questions/735204/convert-a-string-in-c-to-upper-case
-    std::transform(newGuess.begin(), newGuess.end(),newGuess.begin(), ::toupper);
+    toUpperCase(newGuess);
+    //std::cout << (newGuess.length() < MIN_WORD_LENGTH) << guesses.contains(newGuess) << !lexicon.contains(newGuess) << std::endl;
     if (newGuess.length() < MIN_WORD_LENGTH || guesses.contains(newGuess) || !lexicon.contains(newGuess)) {
         return false;
     }
 
     if (!containsWord(newGuess)) {
+        //std::cout << std::endl;
         return false;
     }
 
@@ -102,20 +132,22 @@ bool Boggle::logGuess(string newGuess) {
     return true;
 }
 
-
-// Creates a semi-random board using CUBES as template.
-void Boggle::createBoard(string forced) {
+/*
+ * Creates a semi-random board using CUBES as template. Overwrites each dice top-face with forcedBoard
+ */
+void Boggle::createBoard(string forcedBoard) {
     cubes = Grid<string>(BOARD_SIZE, BOARD_SIZE);
 
     int forceCounter = 0;
-    bool shouldForce = forced.length() == NUM_CUBES;
+    bool shouldForce = forcedBoard.length() == NUM_CUBES;
+    toUpperCase(forcedBoard);
 
     for (int x = 0; x < cubes.nCols; x++) {
         for (int y = 0; y < cubes.nRows; y++) {
             string cube = CUBES[x+y];
 
             if (shouldForce) {
-                cube[0] = forced[forceCounter];
+                cube[0] = forcedBoard[forceCounter];
                 forceCounter++;
             } else {
                 char temp = cube[0];
@@ -133,7 +165,9 @@ void Boggle::createBoard(string forced) {
     }
 }
 
-
+/*
+ * Starts findAllwordsFrompoint from each dice
+ */
 void Boggle::findAllWords() {
     for (int x = 0; x < cubes.nCols; x++) {
         for (int y = 0; y < cubes.nRows; y++) {
@@ -153,28 +187,30 @@ void Boggle::findAllWords() {
     std::cout << "My score: " << computerScore << std::endl;
 }
 
-
+/*
+ * Searches all neighbors to a point and recursively searches for all word that can be created from startpoint
+ */
 void Boggle::findAllWordsFromPoint(Point origin, string currentWord, Map<int, Set<int>> visited) {
-    if (!lexicon.containsPrefix(currentWord)) {
-        return;
-    }
+    if (!lexicon.containsPrefix(currentWord)) { // If prefix doesn't exist, then no word exists starting with this
+        return; // Abort
+    } // Else if correct lenght, real word and user nor computer has guessed the word, add it to guessed words
     else if(currentWord.length() >= MIN_WORD_LENGTH && lexicon.contains(currentWord) && !guesses.contains(currentWord) && !computerGuesses.contains(currentWord)){
         computerGuesses.add(currentWord);
-        computerScore += currentWord.length() - 3;
+        computerScore += currentWord.length() - 3; // Calculate score from word
     }
 
-    Set<int> relevantSet = visited.get(origin.x);
-    relevantSet.add(origin.y);
+    Set<int> relevantSet = visited.get(origin.x); // Get the set with the data relevant to this column
+    relevantSet.add(origin.y); // add the row to the set
     visited.put(origin.x, relevantSet); // Add origin to the list of visited points
 
-    for (int dx = -1; dx <= 1; dx++) {
+    for (int dx = -1; dx <= 1; dx++) { // Iterate through all points neighboring the origin (-1, -1) -> (1, 1) relative coordinate
         Set<int> coi = visited.get(origin.x + dx); // Column of interest
         for (int dy = -1; dy <= 1; dy++) {
-            Point poi = Point(origin.x + dx, origin.y + dy);
+            Point poi = Point(origin.x + dx, origin.y + dy); // Point of interest
 
             // If in bounds && not visited
             if (cubes.inBounds(poi.y, poi.x) && !coi.contains(poi.y)) {
-                findAllWordsFromPoint(poi, currentWord+cubes.get(poi.y, poi.x)[0], visited);
+                findAllWordsFromPoint(poi, currentWord+cubes.get(poi.y, poi.x)[0], visited); // Start from POI, continuing with the current word and a copy of current visited
             }
 
         }
@@ -184,7 +220,9 @@ void Boggle::findAllWordsFromPoint(Point origin, string currentWord, Map<int, Se
 
 
 
-// Replace Map<int, int> with point container (can only track one x for each y at a time)
+/*
+ * Attempts to find given word by searching all relevant neighbors
+ */
 bool Boggle::findWord(Point origin, string word, Map<int, Set<int>> visited) { // re-introduce &
     if (word == "") {
         return true; // If all letters were able to be found, return true
@@ -217,15 +255,10 @@ bool Boggle::findWord(Point origin, string word, Map<int, Set<int>> visited) { /
     return false;
 }
 
-
-//bool Boggle::followTrail(Point origin, Point direction, string word) {
-//    Point poi = origin + direction; // Point Of Interest
-//    std::cout << "(" << poi.x << ", " << ")" << std::endl;
-//    if (cubes.inBounds(poi.y, poi.x)) {
-//        if (cubes.get(poi.y, poi.x) == string(1, word[0])) {
-//            return followTrail(origin + direction, direction, word.substr(1));
-//        }
-//    }
-
-//    return false;
-//}
+/*
+ * Transforms a string to its uppercase version (i.e: "hello" -> "HELLO")
+ */
+void Boggle::toUpperCase(string& text) {
+    // To uppercase https://stackoverflow.com/questions/735204/convert-a-string-in-c-to-upper-case
+    std::transform(text.begin(), text.end(),text.begin(), ::toupper);
+}

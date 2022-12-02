@@ -25,16 +25,16 @@ using namespace std;
 
 int main() {
     intro();
+    Boggle boggle = Boggle();
 
     // play games repeatedly until user decides to quit
     while (true) {
-        Boggle boggle = Boggle("FYCLIOMGORILHJHU");
-        playOneGame(boggle);
+        clearConsole();
+        playOneGame(boggle, !yesOrNo("Do you want to generate a random board (Y/N)? "));
         cout << endl;
         if (!yesOrNo("Play again (Y/N)? ")) {
             break;
         }
-        boggle.shuffleBoard();
     }
 
     cout << "Have a nice day." << endl;
