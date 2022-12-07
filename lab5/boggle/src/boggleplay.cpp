@@ -19,11 +19,14 @@ void printScore(int score);
  */
 void playOneGame(Boggle& boggle, bool randomBoard) {
     if (randomBoard) { // Prompt user for board layout
-      std::cout << "Enter board (" << boggle.BOARD_SIZE * boggle.BOARD_SIZE << " chars): ";
-      string forced;
-      std::cin >> forced;
-      boggle.prepareBoard(forced);
-      std::cin.ignore(1); // Remove the "\n" created from entering board
+        string forced;
+        int boardSize = boggle.BOARD_SIZE * boggle.BOARD_SIZE;
+        do {
+            std::cout << "Enter board (" << boardSize << " chars): ";
+            std::cin >> forced;
+            std::cin.ignore(1); // Remove the "\n" created from entering board
+        } while (forced.size() != boardSize);
+        boggle.prepareBoard(forced);
     } else { // Shuffle existing board
         boggle.prepareBoard();
     }

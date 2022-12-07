@@ -1,9 +1,3 @@
-// This is the .cpp file you will edit and turn in.
-// We have provided a minimal skeleton for you,
-// but you must finish it as described in the spec.
-// Also remove these comments here and add your own.
-// TODO: remove this comment header and replace it with your own
-
 #include <sstream>
 #include "Boggle.h"
 #include "random.h"
@@ -14,7 +8,7 @@
 
 static const int CUBE_SIDES = 6;   // the number of sides on each cube
 static const int NUM_CUBES = 16;   // the number of cubes in the game
-static string CUBES[NUM_CUBES] = {        // the letters on all 6 sides of every cube
+static string CUBES[NUM_CUBES] = { // the letters on all 6 sides of every cube
    "AAEEGN", "ABBJOO", "ACHOPS", "AFFKPS",
    "AOOTTW", "CIMOTU", "DEILRX", "DELRVY",
    "DISTTY", "EEGHNW", "EEINSU", "EHRTVW",
@@ -39,6 +33,7 @@ Boggle::Boggle(string forcedBoard) {
  * Resets scores, empties guessed words & can shuffles board
  */
 void Boggle::prepareBoard(string forcedBoard) {
+    std::cout << forcedBoard << std::endl;
     if (forcedBoard.length() == NUM_CUBES) {
         createBoard(forcedBoard); // Overwrite current board
     } else {
@@ -67,13 +62,13 @@ void Boggle::displayBoard() {
  * Shuffles the board ("rolls" dice and reorganizes them)
  */
 void Boggle::shuffleBoard() {
-    for (auto cube : cubes) {
+    for (auto cube : cubes) { // Roll the dice
         char temp = cube[0];
         int src = randomInteger(0, CUBE_SIDES);
         cube[0] = cube[src];
         cube[src] = temp;
     }
-    shuffle(cubes);
+    shuffle(cubes); // Shuffle cube order
 }
 
 /*
