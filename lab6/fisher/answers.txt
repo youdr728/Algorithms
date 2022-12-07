@@ -1,0 +1,3 @@
+1. Eventqueue används i run() och scheduleEvent()
+    I run() används det för att ta reda på vilket event som ska göras näst.
+    I scheduleEvent() läggs det till ett event i kön.
