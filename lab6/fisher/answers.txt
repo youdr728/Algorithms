@@ -1,3 +1,29 @@
-1. Eventqueue används i run() och scheduleEvent()
+1. eventqueue används i run() och scheduleEvent()
     I run() används det för att ta reda på vilket event som ska göras näst.
     I scheduleEvent() läggs det till ett event i kön.
+
+    allTheFish används i harvestTonnageNow(), addFish() (och destruktorn)
+    I harvestTonnageNow() gås alla fiskar igenom och rensar ut alla döda fiskar. De levande fiskarna läggs till i stillAlive, som sedan slumpas runt.
+        Fiskarna i stillAlive (som går att fånga) blir fångade och tas bort från övriga populationen. De fiskar som är kvar i stillAlive läggs sedan
+        tillbaka i allTheFish.
+    I addfish() används den för att lägga till en fisk till mängden fiskar.
+
+2. Vår hypotes är att både LANDING och MIN_CATCHABLE_AGE påverkar hållbarheten. LANDING har dock en mer kritisk roll än MIN_CATCHABLE_AGE, eftersom
+        den avgör hur många som ska fångas. MIN_CATCHABLE_AGE påverkar endast hur många % av fiskarna som kan fångas denna harvest.
+
+    - Nedan är våra experiment. Värdena är givna i formen (MIN_CATCHABLE_AGE, LANDING):
+    Vi testade med (30, 80'000) vilket kollapsade, vi testade att sänka till LANDING = 8'000, och ändrade sedan MIN_CATCHABLE_AGE till 0->2000 och det
+        höll sig alltid stabilt.
+    Vid (0, 75'000) kollapsade det också, samma sak med (550, 85'000).
+
+3. Dynamiskt allokerade Event och Fish:
+    new Fish används endast i HatchEvent::processEvent(). Den frigörs i de flesta event ifall .IsCaught() == true, och i harvestTonnageNow() om den är död.
+    new DeathEvent används i HatchEvent, SpawnEvent & MatureEvent. Fiskens död schemaläggs så fort den föds.
+    new MatureEvent används också (endast) i HatchEvent. Fiskens uppväxt schemaläggs när den föds.
+    new SpawnEvent används i SpawnEvent och MatureEvent.
+    new HatchEvent används i SpawnEvent och main().
+    new HarvestEvent används i harvest() och main()
+    new PrintEvent används i print() och main()
+    Alla events frigörs i Simulation.run() när de exekverats.
+
+    Det finns inga minnesläckor som Valgrind kunde upptäcka.

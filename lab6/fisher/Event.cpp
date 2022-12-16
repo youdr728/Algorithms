@@ -93,16 +93,16 @@ void matureEvent::withdrawEvent () {
 
 void deathEvent::processEvent (Simulation& sim){
     if(afish->isCaught()){
-    delete afish;
-    afish = nullptr;
-    return;
-  }
-  if(afish->isJuvenile()){
-      sim.decJuvenilePopulation();
-  } else if(afish->isAdult()) {
-      sim.decAdultPopulation();
-  }
-  afish->makeDead();
+        delete afish;
+        afish = nullptr;
+        return;
+    }
+    if(afish->isJuvenile()){
+        sim.decJuvenilePopulation();
+    } else if(afish->isAdult()) {
+        sim.decAdultPopulation();
+    }
+    afish->makeDead();
 }
 
 void deathEvent::withdrawEvent (){
