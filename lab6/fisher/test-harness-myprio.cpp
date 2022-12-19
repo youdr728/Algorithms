@@ -131,6 +131,7 @@ void moderateMyPriorityQueueTest() try {
   for (size_t i = 0; i < 8; ++i)
     prio.push(7-i);
 
+
   /* Check that basic properties hold. */
   checkCondition(prio.size() == 16, "New prio has the right number of elements.");
   checkCondition(!prio.empty(),     "prio queue is nonempty.");

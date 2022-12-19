@@ -22,14 +22,14 @@ using namespace std;
  * of the implementation, you will want to turn more and more of these
  * flags on.
  */
-#define BasicMyVectorTestEnabled          1 
+#define BasicMyVectorTestEnabled          1
 #define ModerateMyVectorTestEnabled       1
 #define HarderMyVectorTestEnabled         1
 #define MutatingMyVectorTestEnabled       1
 
-#define ConstMyVectorTestEnabled          0
-#define BasicCopyTestEnabled              0
-#define ModerateCopyTestEnabled           0
+#define ConstMyVectorTestEnabled          1
+#define BasicCopyTestEnabled              1
+#define ModerateCopyTestEnabled           1
 
 
 /* Utility function that pauses until the user hits ENTER. */
@@ -134,6 +134,7 @@ void moderateMyVectorTest() try {
   for (size_t i = 0; i < 8; ++i)
     vect.push_back(7-i);
 
+
   /* Check that basic properties hold. */
   checkCondition(vect.size() == 16, "New vector has the right number of elements.");
   checkCondition(!vect.empty(),     "vector is nonempty.");
@@ -148,7 +149,8 @@ void moderateMyVectorTest() try {
   }
 
   for (size_t i = 0; i < 8; ++i)
-    vect.pop_back();
+      vect.pop_back();
+
 
   /* Check basic properties again. */
   checkCondition(vect.size() == 8,      "vector has 8 elements.");
