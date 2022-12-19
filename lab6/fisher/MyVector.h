@@ -43,8 +43,8 @@ public:
     unsigned size()const;
 
 private:
-    unsigned capacity = 1; // Defualt size is 1
-    unsigned numberOfElements = 0; // Default is 0
+    unsigned numberOfElements = 0; // Array starts empty
+    unsigned capacity = 1; // Default size is 1
     T* items; // Start with size of 1
 
     // D.R.Y   VV
@@ -120,32 +120,35 @@ MyVector<T>& MyVector<T>::operator =(const MyVector& other){
 template<typename T>
 void MyVector<T>::push_back(const T& e){
     // Check if it will exceed limit
-    if(capacity < numberOfElements + 1) {
+    if(capacity < numberOfElements) {
         // Double size of items
-        T newItems[capacity*2];
-        for (unsigned i = 0; i < capacity - 1; i++) {
-            T copy = items[i]; // Copy-constructor creating a new one
-            newItems[i] = copy;
-            delete items[i]; // Can now safely delete old element
+        T* newItems = new T[capacity*2];
+        for (unsigned i = 0; i < numberOfElements; i++) {
+//            T copy = items[i]; // Copy-constructor creating a new one
+//            newItems[i] = copy;
+            newItems[i] = items[i];
+            //delete items[i]; // Can now safely delete old element (May not be needed?)
         }
         T* oldArr = this->items;
         this->items = newItems;
-        delete oldArr; // Or is it delete []?
+        delete [] oldArr; // Is it delete or delete []?
         capacity *= 2;
     }
-    items[numberOfElements] = e;
-    numberOfElements++;
+
+
+    this->items[numberOfElements] = e;
+    this->numberOfElements++;
 
     //MYEXCEPTION("unimplemented method");
 }
 
-// Deletes & removes the last element of the list.
+// Deletes & removes the lReturnera en pekare till ett element som ligger “efter sista elementet i listan”.ast element of the list.
 template<typename T>
 void MyVector<T>::pop_back(){
     // Only delete item if an item exists
     if (!empty()) {
         numberOfElements--;
-        delete items[numberOfElements];
+        delete &items[numberOfElements];
     }
     //MYEXCEPTION("unimplemented method");
 }
@@ -154,10 +157,11 @@ void MyVector<T>::pop_back(){
 template<typename T>
 T& MyVector<T>::operator[](unsigned i){
     // TODO: replace the code below with your code for this member
-    if (i <= capacity) {
-        return items[i];
-    }
-    MYEXCEPTION("Attempt to index item out of range.");
+//    if (i > capacity) {Returnera en pekare till ett element som ligger “efter sista elementet i listan”.
+//        MYEXCEPTION("Attempt to index item out of range.");
+//    }
+
+    return items[i];
     //return items[numberOfElements - 1];
     //MYEXCEPTION("unimplemented method");
 }
@@ -166,11 +170,11 @@ T& MyVector<T>::operator[](unsigned i){
 template<typename T>
 const T& MyVector<T>::operator[](unsigned i)const{
     // TODO: replace the code below with your code for this member
-    if (i > capacity) {
-        MYEXCEPTION("Attempt to index item out of range.");
-//        return;
-    }
-    return *items[i];
+//    if (i > capacity) {
+//        MYEXCEPTION("Attempt to index item out of range.");
+//    }
+
+    return items[i];
     //MYEXCEPTION("unimplemented method");
 }
 
@@ -186,15 +190,13 @@ bool MyVector<T>::empty()const{
 template<typename T>
 void MyVector<T>::clear(){
     // TODO: replace the code below with your code for this member
-    for (unsigned i = 0; i < numberOfElements-1; i++) {
-        delete items[i];
-    }
-    T* oldArr = this->items;
+//    for (unsigned i = 0; i < numberOfElements-1; i++) {
+//        delete &items[i];
+//    }
+    delete [] items; // Or is it delete []?
     this->items = new T[1]; // Create a new array of size 1
-    delete oldArr; // Or is it delete []?
     numberOfElements = 0;
     capacity = 1;
-    //delete [] items;
     //MYEXCEPTION("unimplemented method");
 }
 
@@ -210,16 +212,16 @@ unsigned MyVector<T>::size()const{
 template<typename T>
 T* MyVector<T>::begin(){
     // TODO: replace the code below with your code for this member
-    //return items;
-    MYEXCEPTION("unimplemented method");
+    return &items[0];
+    //MYEXCEPTION("unimplemented method");
 }
 
 // Returns a pointer to the end of the list
 template<typename T>
 T* MyVector<T>::end(){
     // TODO: replace the code below with your code for this member
-    //return items[numberOfElements]; // Will be 1 more than capacity
-    MYEXCEPTION("unimplemented method");
+    return &items[numberOfElements]; // Will be 1 more than capacity
+    //MYEXCEPTION("unimplemented method");
 }
 
 #endif // MY_VECTOR_H
