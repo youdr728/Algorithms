@@ -37,6 +37,7 @@ private:
     MyVector<T> queue = MyVector<T>();
 
     void printTree();
+    void swap(unsigned i, unsigned j);
 };
 
 template <typename T, typename C>
@@ -52,23 +53,21 @@ MyPriorityQueue<T,C>::~MyPriorityQueue(){
 // Add the given element to the queue
 template <typename T, typename C>
 void MyPriorityQueue<T,C>::push(const T& t){
-    queue.push_back(t); // Adds on the end
-    std::cout << "Adding: " << t << std::endl;
-    printTree();
-    std::cout << " -> ";
+//    std::cout << "Adding: " << t << std::endl;
+//    std::cout << "-> ";
 
-    unsigned currentIndex = queue.size() - 1;
-    unsigned parentIndex = (currentIndex)/ 2;
+    unsigned currentIndex = queue.size(); // Is one larger than should be
+    queue.push_back(t); // Adds on the end, will increase size + 1, so has to be done after queue.size() is saved
+    unsigned parentIndex = (currentIndex - 1)/ 2;
 
     while (currentIndex != 0 and strictly_larger_operator(queue[parentIndex], t)) { // Parent > new
-        queue[currentIndex] = queue[parentIndex]; // Move parent down
-        queue[parentIndex] = t; // Move t up
-        currentIndex = parentIndex; // Update to new pos
+        swap(currentIndex, parentIndex);
 
+        currentIndex = parentIndex; // Update to new pos
         parentIndex = (parentIndex - 1) / 2; // Update to new parent
     }
-    printTree();
-    std::cout << std::endl;
+//    printTree();
+//    std::cout << std::endl;
 
 }
 
@@ -81,6 +80,9 @@ T MyPriorityQueue<T,C>::top()const{
 // Remove the element with highest priority
 template <typename T, typename C>
 void MyPriorityQueue<T,C>::pop(){
+//    std::cout << "-------------------------------------\n";
+//    printTree();
+
     unsigned index = 0; // Start at the top
     queue[0] = queue[queue.size()-1];
     queue.pop_back();
@@ -88,30 +90,30 @@ void MyPriorityQueue<T,C>::pop(){
     unsigned left = 2 * index + 1;
     unsigned right = 2 * index + 2;
 
-    if (strictly_larger_operator(queue[left], queue[0]) and strictly_larger_operator(queue[right], queue[0])) {
-        return; // found the smallest (somehow at the back initially?)
-    }
+//    std::cout << "\n New top: " << queue[0] << std::endl;
+    while (right <= queue.size()-1 and (strictly_larger_operator(queue[index], queue[right]) or strictly_larger_operator(queue[index], queue[left]))) { // Loop as long as there are children, and the children are smaller
 
-    while (right <= queue.size()-1) { // Loop as long as there are children
+
 
         unsigned replaceWith = left; // Assume left is smaller
-//        std::cout << queue[left] << "   " << queue[right] << "   |   left > right: " << strictly_larger_operator(left, right) << std::endl;
+        //std::cout << queue[left] << "   " << queue[right] << "   |   left > right: " << strictly_larger_operator(left, right) << std::endl;
 
         if (strictly_larger_operator(queue[left], queue[right])) { // (left > right) determine if right was smaller
             replaceWith = right; // right was smaller
-//            std::cout << "   - Swapped with right" << std::endl;
-        }/* else {
+            //std::cout << "   - Swapped with right" << std::endl;
+        } /*else {
             std::cout << "   - Swapped with left" << std::endl;
         }*/
 
-        queue[index] = queue[replaceWith];
+        swap(index, replaceWith);
 
         index = replaceWith; // Follow down the path which was replaced
         left = 2 * index + 1;
         right = 2 * index + 2;
     }
-
-    std::cout << "New top: " << top() << std::endl;
+//    std::cout << "\n\n-> ";
+//    printTree();
+//    std::cout << std::endl;
 }
 
 // Returns whether the queue is empty or not
@@ -136,6 +138,13 @@ void MyPriorityQueue<T, C>::printTree() {
     std::cout << "]";
 }
 
+
+template <typename T, typename C>
+void MyPriorityQueue<T, C>::swap(unsigned i, unsigned j) {
+    T tmpHolder = queue[i];
+    queue[i] = queue[j];
+    queue[j] = tmpHolder;
+}
 
 
 #endif // MY_PRIORITY_QUEUE_H

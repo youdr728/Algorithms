@@ -9,7 +9,6 @@
 
 #include "MyException.h"
 //#include <math.h>
-#include <iostream>
 
 template <typename T>
 class MyVector
@@ -64,7 +63,6 @@ MyVector<T>::MyVector(){
 // Frees all dynamically allocated memory belonging to the list
 template<typename T>
 MyVector<T>::~MyVector(){
-    std::cout << "[DECONST] Delete" << std::endl;
     delete [] items;
 
     //MYEXCEPTION("unimplemented method");

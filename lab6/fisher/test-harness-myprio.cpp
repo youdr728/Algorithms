@@ -140,7 +140,7 @@ void moderateMyPriorityQueueTest() try {
   for (size_t i = 0; i < 16; ++i){
     checkCondition(prio.size() == 16-i, "prio has the right number of elements.");
     int current = prio.top();
-    std::cout << "Expecting: " << i/2 << "\n  - Got: " << current << std::endl;
+//    std::cout << "Expecting: " << i/2 << "\n  - Got: " << current << std::endl;
     checkCondition(current == i/2,      "top prio element is correct.");
     prio.pop();
   }

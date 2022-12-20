@@ -44,7 +44,6 @@ void Simulation::scheduleEvent (Event * newEvent){
 void Simulation::harvestTonnageNow(unsigned target,  mt19937& generator){
     MyVector<Fish*> stillAlive;
 //    std::vector<Fish*> stillAlive;
-    std::cout << "[Harvest]" << allTheFish.size() << std::endl;
     for(unsigned i=0; i < allTheFish.size(); ++i){
         assert(! allTheFish[i]->isCaught());
         if (allTheFish[i]->isDead()){
@@ -53,9 +52,7 @@ void Simulation::harvestTonnageNow(unsigned target,  mt19937& generator){
             stillAlive.push_back(allTheFish[i]);
         }
     }
-    std::cout << "Clear" << std::endl;
     allTheFish.clear();
-    std::cout << ".begin(), .end()" << std::endl;
     shuffle(stillAlive.begin(),stillAlive.end(),generator);
     unsigned landing =0;
     unsigned fish=0;

@@ -54,11 +54,11 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../fisher/Event.cpp \
 		../fisher/Fish.cpp \
-		../fisher/test-harness-myprio.cpp \
+		../fisher/main.cpp \
 		../fisher/Simulation.cpp 
 OBJECTS       = Event.o \
 		Fish.o \
-		test-harness-myprio.o \
+		main.o \
 		Simulation.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -167,7 +167,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		MyVector.h \
 		Simulation.h ../fisher/Event.cpp \
 		../fisher/Fish.cpp \
-		../fisher/test-harness-myprio.cpp \
+		../fisher/main.cpp \
 		../fisher/Simulation.cpp
 QMAKE_TARGET  = fisher
 DESTDIR       = 
@@ -437,10 +437,14 @@ Fish.o: ../fisher/Fish.cpp ../fisher/Fish.h \
 		../fisher/config.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Fish.o ../fisher/Fish.cpp
 
-test-harness-myprio.o: ../fisher/test-harness-myprio.cpp ../fisher/MyPriorityQueue.h \
+main.o: ../fisher/main.cpp ../fisher/Event.h \
+		../fisher/Fish.h \
+		../fisher/config.h \
+		../fisher/Simulation.h \
+		../fisher/MyPriorityQueue.h \
 		../fisher/MyVector.h \
 		../fisher/MyException.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o test-harness-myprio.o ../fisher/test-harness-myprio.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../fisher/main.cpp
 
 Simulation.o: ../fisher/Simulation.cpp ../fisher/Simulation.h \
 		../fisher/config.h \
