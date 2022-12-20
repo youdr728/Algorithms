@@ -9,6 +9,7 @@
 
 #include "MyException.h"
 //#include <math.h>
+#include <iostream>
 
 template <typename T>
 class MyVector
@@ -41,6 +42,7 @@ public:
     void clear();
 
     unsigned size()const;
+    unsigned storageCapacity()const;
 
 private:
     unsigned numberOfElements = 0; // Array starts empty
@@ -62,7 +64,8 @@ MyVector<T>::MyVector(){
 // Frees all dynamically allocated memory belonging to the list
 template<typename T>
 MyVector<T>::~MyVector(){
-    delete [] this->items;
+    std::cout << "[DECONST] Delete" << std::endl;
+    delete [] items;
 
     //MYEXCEPTION("unimplemented method");
 }
@@ -70,40 +73,35 @@ MyVector<T>::~MyVector(){
 // Constructs a copy of other list's values.
 template<typename T>
 MyVector<T>::MyVector(const MyVector& other){
-    // TODO: replace the code below with your code for this member
-
-    //T copy[round(log2(other.numberOfElements))]; // Crete minimum size
-    T* copiedArray = new T[other.capacity];
-    for (unsigned i = 0; i < other.capacity - 1; i++) {
-        copiedArray[i] = other.items[i];
+    if (this == &other) {
+        return;
     }
 
-    delete [] items; // Or is it delete []?
-    this->items = copiedArray;
+    items = new T[other.capacity];
+    for (unsigned i = 0; i < other.numberOfElements; i++) {
+        items[i] = other.items[i];
+    }
+
     this->numberOfElements = other.numberOfElements;
     this->capacity = other.numberOfElements;
     //MYEXCEPTION("unimplemented method");
 }
 
 // Copies the other array into itself.
-template<typename T> /////////////////////////////////////////////////// HELP WITH THIS
+template<typename T>
 MyVector<T>& MyVector<T>::operator =(const MyVector& other){
-    if (this->items == other.items) {
+    if (this == &other) {
         return *this;
     }
 
-    T* copiedArray = new T[other.capacity];
-    for (unsigned i = 0; i < other.capacity - 1; i++) {
-        copiedArray[i] = other.items[i];
+    delete [] items;
+    items = new T[other.capacity];
+    for (unsigned i = 0; i < other.numberOfElements; i++) {
+        items[i] = other.items[i];
     }
-
-//    for (unsigned i = 0; i < this->capacity - 1; i++) {
-//        delete items[i]; // not needed, items is empty
-//    }
-    delete [] this->items; // Or is it delete []?
-    this->items = copiedArray;
+    //this->items = copiedArray;
     this->numberOfElements = other.numberOfElements;
-    this->capacity = other.capacity;
+    this->capacity = other.numberOfElements;
     return *this;
     //MYEXCEPTION("unimplemented method");
 }
@@ -112,7 +110,7 @@ MyVector<T>& MyVector<T>::operator =(const MyVector& other){
 template<typename T>
 void MyVector<T>::push_back(const T& e){
     // Check if it will exceed limit
-    if(capacity < numberOfElements) {
+    if(capacity < numberOfElements + 1) {
         // Double size of items
         T* newItems = new T[capacity*2];
         for (unsigned i = 0; i < numberOfElements; i++) {
@@ -183,6 +181,13 @@ template<typename T>
 unsigned MyVector<T>::size()const{
     return numberOfElements;
 }
+
+
+template<typename T>
+unsigned MyVector<T>::storageCapacity()const{
+    return capacity;
+}
+
 
 // Returns a pointer to the first element of the list
 template<typename T>

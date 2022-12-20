@@ -311,7 +311,9 @@ void basicCopyTest() try {
     /* Create a clone of one and confirm that everything copied correctly. 
      * This uses the copy constructor.
      */
+    std::cout << "Pre" << std::endl;
     MyVector<int> clone = one;
+    std::cout << "Post" << std::endl;
 
     /* Basic checks. */
     checkCondition(one.size() == clone.size(),   "clone has the same number of elements as one.");
