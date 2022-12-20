@@ -27,3 +27,7 @@
     Alla events frigörs i Simulation.run() när de exekverats.
 
     Det finns inga minnesläckor som Valgrind kunde upptäcka.
+
+
+
+svara på Del C

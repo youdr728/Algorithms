@@ -13,10 +13,14 @@
 #include <vector>
 #include <chrono>
 #include "Point.h"
+#include <unordered_map>
+//#include "fast.cpp"
 
 // constants
 static const int SCENE_WIDTH = 512;
 static const int SCENE_HEIGHT = 512;
+
+//void doBrute(Vector<Point> points, QGraphicsScene* scene);
 
 void render_points(QGraphicsScene* scene, const vector<Point>& points) {
     for(const auto& point : points) {
@@ -32,7 +36,7 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
     // open file
-    string filename = "input1000.txt";
+    string filename = "input1600.txt";
     ifstream input;
     input.open(filename);
 
@@ -68,22 +72,49 @@ int main(int argc, char *argv[]) {
     sort(points.begin(), points.end());
     auto begin = chrono::high_resolution_clock::now();
 
-    // iterate through all combinations of 4 points
-    for (int i = 0 ; i < N-3 ; ++i) {
-        for (int j = i+1 ; j < N-2 ; ++j) {
-            for (int k = j+1 ; k < N-1 ; ++k) {
-                //only consider fourth point if first three are collinear
-                if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(k))) {
-                    for (int m{k+1} ; m < N ; ++m) {
-                        if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(m))) {
-                            render_line(scene, points.at(i), points.at(m));
-                            a.processEvents(); // show rendered line
-                        }
-                    }
-                }
+
+    for (Point p : points) {
+        unordered_map<double, vector<Point>> map = unordered_map<double, vector<Point>>();
+        for (Point q : points) {
+            if (!(p > q) and !(p < q)) { // p == q
+                continue; // Skip itself
+            }
+
+            double slope = p.slopeTo(q);
+
+            auto search = map.find(slope);
+            if (search != map.end()) {
+                // Create vector
+                map.insert({slope, vector<Point>()});
+                map[slope].push_back(p);
+            }
+
+            map[slope].push_back(q);
+
+
+            if (map[slope].size() >= 4) {
+                render_line(scene, p, q);
+                a.processEvents();
             }
         }
     }
+
+    //    iterate through all combinations of 4 points
+//    for (int i = 0 ; i < N-3 ; ++i) {
+//        for (int j = i+1 ; j < N-2 ; ++j) {
+//            for (int k = j+1 ; k < N-1 ; ++k) {
+//                //only consider fourth point if first three are collinear
+//                if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(k))) {
+//                    for (int m{k+1} ; m < N ; ++m) {
+//                        if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(m))) {
+//                            render_line(scene, points.at(i), points.at(m));
+//                            a.processEvents(); // show rendered line
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     auto end = chrono::high_resolution_clock::now();
     cout << "Computing line segments took "
