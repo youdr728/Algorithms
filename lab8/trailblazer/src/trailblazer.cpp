@@ -5,7 +5,8 @@
 
 #include "costs.h"
 #include "trailblazer.h"
-// TODO: include any other headers you need; remove this comment
+#include "queue"
+
 using namespace std;
 
 /* Colours:
@@ -77,9 +78,58 @@ vector<Node *> breadthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end)
     //       (The function body code provided below is just a stub that returns
     //        an empty vector so that the overall project will compile.
     //        You should remove that code and replace it with your implementation.)
-    vector<Vertex*> path;
+    graph.resetData();
+    vector<Vertex*> vertexPath;
+    std::queue<vector<Node*>> queue;
+    std::queue<vector<Node*>> empty;
+    vector<Node*> startPath;
+    startPath.push_back(graph.getNode(start->name));
+    queue.push(startPath);
+    start->setColor(GREEN);
 
-    return path;
+    while (!queue.empty()) {
+        vector<Node*> path = queue.front();
+        queue.pop();
+        Node* current = path.back(); // Get the most recent node
+        current->setColor(GREEN);
+        bool deadEnd = true;
+
+        for (auto neighbor : graph.getNeighbors(current)) {
+            if (neighbor == end) {
+                queue.swap(empty); // Swap with empty queue to break while-loop
+                deadEnd = false;
+                path.push_back(neighbor);
+                for (auto node : path) {
+                    vertexPath.push_back(graph.getVertex(node->name));
+                }
+
+                break; // Break for-loop
+            }
+
+            if (!neighbor->visited) {
+                neighbor->visited = true; // It has technically not been visited yet, *but* we have found the fastest way to it
+                neighbor->setColor(YELLOW); // Mark as found
+                vector<Node*> extendedPath = path; // Create copy
+                extendedPath.push_back(neighbor);
+                queue.push(extendedPath);
+                deadEnd = false;
+            }
+        }
+        Color fillColor = GREEN;
+        if (deadEnd) {
+            fillColor = GRAY;
+
+        }
+
+        for (auto node : path) {
+            if (node->getColor() != fillColor) {
+                node->setColor(fillColor);
+            }
+        }
+    }
+
+
+    return vertexPath;
 }
 
 vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end) {
