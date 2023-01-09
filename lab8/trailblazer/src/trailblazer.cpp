@@ -8,6 +8,12 @@
 // TODO: include any other headers you need; remove this comment
 using namespace std;
 
+/* Colours:
+ * Green - Visited
+ * Yellow - Queued
+ * Gray - Eliminated
+ */
+
 vector<Node *> depthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end) {
     // TODO: implement this function; remove these comments
     //       (The function body code provided below is just a stub that returns
