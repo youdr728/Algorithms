@@ -1,142 +1,113 @@
-// This is the CPP file you will edit and turn in.
-// Also remove these comments here and add your own, along with
-// comments on every function and on complex code sections.
-// TODO: write comment header for this file; remove this comment
+/*
+ * filru737
+ * youdr728
+ */
 
 #include "costs.h"
 #include "trailblazer.h"
 #include "queue"
 #include "pqueue.h"
+#include <unordered_map>
+#include <queue.h>
 
 using namespace std;
 
-/* Colours:
- * Green - Visited
- * Yellow - Queued
- * Gray - Eliminated
- */
 
+// OBS: DFS:en prioriterar grannarna nedanför, vilket DFS:en i labb-bilderna inte gör.
 vector<Node *> depthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end) {
-    // TODO: implement this function; remove these comments
-    //       (The function body code provided below is just a stub that returns
-    //        an empty vector so that the overall project will compile.
-    //        You should remove that code and replace it with your implementation.)
     graph.resetData();
-    vector<Vertex*> vertexPath;
-    Stack<vector<Node*>> stack;
-    vector<Node*> startPath;
-    startPath.push_back(graph.getNode(start->name));
-    stack.push(startPath);
-    start->setColor(GREEN);
+    vector<Vertex*> path;
+    Node* startNode = graph.getNode(start->name);
+    Node* endNode = graph.getNode(end->name);
+
+    Stack<Node*> stack;
+    stack.push(startNode);
 
     while (!stack.isEmpty()) {
-        vector<Node*> path = stack.pop();
-        Node* current = path.back(); // Get the most recent node
+        Node* current = stack.pop();
         current->setColor(GREEN);
+        current->visited = true;
         bool deadEnd = true;
 
 
 
         for (auto neighbor : graph.getNeighbors(current)) {
-            if (neighbor == end) {
-                stack.clear(); // Empty stack to break while-loop
+            if (!neighbor->visited) {
+                neighbor->setColor(YELLOW);
+                neighbor->previous = current;
+                stack.push(neighbor);
                 deadEnd = false;
-                path.push_back(neighbor);
-                for (auto node : path) {
-                    vertexPath.push_back(graph.getVertex(node->name));
+
+                if (neighbor == endNode) {
+                    Node* node = endNode;
+                    node->setColor(GREEN);
+                    while (node != nullptr) {
+                        path.push_back(graph.getVertex(node->name));
+                        node = node->previous;
+                    }
+                    stack.clear(); // Halt while-loop
+                    break; // End for-loop
                 }
-
-                break; // Break for-loop
-            }
-            else if (!neighbor->visited) {
-                neighbor->visited = true; // It has technically not been visited yet, *but* we have found the fastest way to it
-                neighbor->setColor(YELLOW); // Mark as found
-                vector<Node*> extendedPath = path; // Create copy
-                extendedPath.push_back(neighbor);
-                stack.push(extendedPath);
-                deadEnd = false;
             }
         }
-        Color fillColor = GREEN;
+
         if (deadEnd) {
-            fillColor = GRAY;
-        }
-
-        for (auto node : path) {
-            if (node->getColor() != fillColor) {
-                node->setColor(fillColor);
+            Node* next = stack.peek();
+            std::cout << next->name << std::endl;
+            Node* back = current;
+            while (back != next->previous and back != nullptr) {
+                std::cout << back->name << std::endl;
+                back->setColor(GRAY);
+                back = back->previous;
             }
         }
+
     }
 
-
-    return vertexPath;
+    return path;
 }
 
 vector<Node *> breadthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end) {
-    // TODO: implement this function; remove these comments
-    //       (The function body code provided below is just a stub that returns
-    //        an empty vector so that the overall project will compile.
-    //        You should remove that code and replace it with your implementation.)
     graph.resetData();
-    vector<Vertex*> vertexPath;
-    std::queue<vector<Node*>> queue;
-    std::queue<vector<Node*>> empty;
-    vector<Node*> startPath;
-    startPath.push_back(graph.getNode(start->name));
-    queue.push(startPath);
-    start->setColor(GREEN);
+    vector<Vertex*> path;
+    Node* startNode = graph.getNode(start->name);
+    Node* endNode = graph.getNode(end->name);
 
-    while (!queue.empty()) {
-        vector<Node*> path = queue.front();
-        queue.pop();
-        Node* current = path.back(); // Get the most recent node
+    Queue<Node*> queue;
+    queue.enqueue(startNode);
+
+    while (!queue.isEmpty()) {
+        Node* current = queue.dequeue();
         current->setColor(GREEN);
+        current->visited = true;
         bool deadEnd = true;
 
+
         for (auto neighbor : graph.getNeighbors(current)) {
-            if (neighbor == end) {
-                queue.swap(empty); // Swap with empty queue to break while-loop
+            if (!neighbor->visited) {
+                neighbor->setColor(YELLOW);
+                neighbor->previous = current;
+                queue.enqueue(neighbor);
                 deadEnd = false;
-                path.push_back(neighbor);
 
-
-                for (auto node : path) {
-                    vertexPath.push_back(graph.getVertex(node->name));
+                if (neighbor == endNode) {
+                    Node* node = endNode;
+                    node->setColor(GREEN);
+                    while (node != nullptr) {
+                        path.push_back(graph.getVertex(node->name));
+                        node = node->previous;
+                    }
+                    queue.clear(); // Halt while-loop
+                    break; // End for-loop
                 }
-
-                break; // Break for-loop
-            }
-            else if (!neighbor->visited) {
-                neighbor->visited = true; // It has technically not been visited yet, *but* we have found the fastest way to it
-                neighbor->setColor(YELLOW); // Mark as found
-                vector<Node*> extendedPath = path; // Create copy
-                extendedPath.push_back(neighbor);
-                queue.push(extendedPath);
-                deadEnd = false;
-            }
-        }
-        Color fillColor = GREEN;
-        if (deadEnd) {
-            fillColor = GRAY;
-        }
-
-        for (auto node : path) {
-            if (node->getColor() != fillColor) {
-                node->setColor(fillColor);
             }
         }
     }
 
-
-    return vertexPath;
+    return path;
 }
 
 vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end) {
-    // TODO: implement this function; remove these comments
-    //       (The function body code provided below is just a stub that returns
-    //        an empty vector so that the overall project will compile.
-    //        You should remove that code and replace it with your implementation.)
     graph.resetData();
     vector<Vertex*> path;
 
@@ -145,78 +116,101 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
     Node* endNode = graph.getNode(end->name);
     queue.enqueue(startNode, startNode->cost);
 
+    std::unordered_map<Node*, bool> queueStore;
+    queueStore.insert({startNode, true});
+
     while (!queue.isEmpty()) {
         Node* currentNode = queue.dequeue();
         currentNode->visited = true;
         currentNode->setColor(GREEN);
-        bool ended = false;
-        for (auto neighbor : graph.getNeighbors(currentNode)) {
-            if (neighbor == endNode) {
-                queue.clear();
-                neighbor->previous = currentNode;
-                Node* currentPathNode = neighbor;
-                while (currentPathNode != nullptr) {
-                    currentPathNode->setColor(GREEN);
-                    path.push_back(graph.getVertex(currentPathNode->name));
-                    currentPathNode = currentPathNode->previous;
-                }
-                ended = true;
-                break;
+
+        if (currentNode == endNode) {
+            queue.clear();
+            Node* currentPathNode = currentNode;
+            while (currentPathNode != nullptr) {
+                currentPathNode->setColor(GREEN);
+                path.push_back(graph.getVertex(currentPathNode->name));
+                currentPathNode = currentPathNode->previous;
             }
-            else if (!neighbor->visited) {
-                neighbor->cost = currentNode->cost + 1;
-                queue.enqueue(neighbor, neighbor->cost);
-                neighbor->previous = currentNode;
-                neighbor->setColor(YELLOW);
-            }
+
+            break;
         }
-        if (!ended) {
-            currentNode->setColor(GRAY);
+
+
+        for (auto neighbor : graph.getNeighbors(currentNode)) {
+            if (!neighbor->visited) {
+                auto edge = graph.getEdge(currentNode, neighbor);
+                double newCost = currentNode->cost + edge->cost;
+                if (newCost < neighbor->cost or neighbor->cost == 0) {
+                    neighbor->cost = currentNode->cost + edge->cost;
+                    neighbor->previous = currentNode;
+
+                    if (queueStore.find(neighbor) != queueStore.end()) { // Add/update
+                        queue.changePriority(neighbor, neighbor->cost);
+                    }
+                    else {
+                        queue.enqueue(neighbor, neighbor->cost);
+                    }
+                }
+
+                neighbor->setColor(YELLOW);
+
+            }
         }
     }
+
     return path;
 }
 
 vector<Node *> aStar(BasicGraph& graph, Vertex* start, Vertex* end) {
-    // TODO: implement this function; remove these comments
-    //       (The function body code provided below is just a stub that returns
-    //        an empty vector so that the overall project will compile.
-    //        You should remove that code and replace it with your implementation.)
     graph.resetData();
     vector<Vertex*> path;
 
     PriorityQueue<Node*> queue;
     Node* startNode = graph.getNode(start->name);
     Node* endNode = graph.getNode(end->name);
-    queue.enqueue(startNode, startNode->heuristic(endNode));
+    queue.enqueue(startNode, startNode->cost);
+
+    std::unordered_map<Node*, bool> queueStore;
+    queueStore.insert({startNode, true});
 
     while (!queue.isEmpty()) {
         Node* currentNode = queue.dequeue();
         currentNode->visited = true;
         currentNode->setColor(GREEN);
-        bool ended = false;
-        for (auto neighbor : graph.getNeighbors(currentNode)) {
-            if (neighbor == endNode) {
-                queue.clear();
-                neighbor->previous = currentNode;
-                Node* currentPathNode = neighbor;
-                while (currentPathNode != nullptr) {
-                    currentPathNode->setColor(GREEN);
-                    path.push_back(graph.getVertex(currentPathNode->name));
-                    currentPathNode = currentPathNode->previous;
-                }
-                ended = true;
-                break;
+
+        if (currentNode == endNode) {
+            queue.clear();
+            Node* currentPathNode = currentNode;
+            while (currentPathNode != nullptr) {
+                currentPathNode->setColor(GREEN);
+                path.push_back(graph.getVertex(currentPathNode->name));
+                currentPathNode = currentPathNode->previous;
             }
-            else if (!neighbor->visited) {
-                neighbor->cost = currentNode->cost + 1;
-                queue.enqueue(neighbor, neighbor->heuristic(endNode) + neighbor->cost);
-                neighbor->previous = currentNode;
-                neighbor->setColor(YELLOW);
-            }
+
+            break;
         }
-        if (!ended) {
-            currentNode->setColor(GRAY);
+
+
+        for (auto neighbor : graph.getNeighbors(currentNode)) {
+            if (!neighbor->visited) {
+                auto edge = graph.getEdge(currentNode, neighbor);
+                double newCost = currentNode->cost + edge->cost + neighbor->heuristic(endNode);
+                if (newCost < neighbor->cost or neighbor->cost == 0) { // Update if shorter path is found (or if cost of other path uninitialized)
+                    neighbor->cost = currentNode->cost + edge->cost;
+                    neighbor->previous = currentNode;
+
+                    if (queueStore.find(neighbor) != queueStore.end()) { // Add/update
+                        queue.changePriority(neighbor, neighbor->cost);
+                    }
+                    else {
+                        queue.enqueue(neighbor, neighbor->cost);
+                    }
+                }
+
+                neighbor->setColor(YELLOW);
+
+            }
         }
     }
 
