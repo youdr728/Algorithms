@@ -6,6 +6,7 @@
 #include "costs.h"
 #include "trailblazer.h"
 #include "queue"
+#include "pqueue.h"
 
 using namespace std;
 
@@ -47,8 +48,7 @@ vector<Node *> depthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end) {
 
                 break; // Break for-loop
             }
-
-            if (!neighbor->visited) {
+            else if (!neighbor->visited) {
                 neighbor->visited = true; // It has technically not been visited yet, *but* we have found the fastest way to it
                 neighbor->setColor(YELLOW); // Mark as found
                 vector<Node*> extendedPath = path; // Create copy
@@ -99,14 +99,15 @@ vector<Node *> breadthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end)
                 queue.swap(empty); // Swap with empty queue to break while-loop
                 deadEnd = false;
                 path.push_back(neighbor);
+
+
                 for (auto node : path) {
                     vertexPath.push_back(graph.getVertex(node->name));
                 }
 
                 break; // Break for-loop
             }
-
-            if (!neighbor->visited) {
+            else if (!neighbor->visited) {
                 neighbor->visited = true; // It has technically not been visited yet, *but* we have found the fastest way to it
                 neighbor->setColor(YELLOW); // Mark as found
                 vector<Node*> extendedPath = path; // Create copy
@@ -118,7 +119,6 @@ vector<Node *> breadthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end)
         Color fillColor = GREEN;
         if (deadEnd) {
             fillColor = GRAY;
-
         }
 
         for (auto node : path) {
@@ -137,7 +137,43 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
     //       (The function body code provided below is just a stub that returns
     //        an empty vector so that the overall project will compile.
     //        You should remove that code and replace it with your implementation.)
+    graph.resetData();
     vector<Vertex*> path;
+
+    PriorityQueue<Node*> queue;
+    Node* startNode = graph.getNode(start->name);
+    Node* endNode = graph.getNode(end->name);
+    queue.enqueue(startNode, startNode->cost);
+
+    while (!queue.isEmpty()) {
+        Node* currentNode = queue.dequeue();
+        currentNode->visited = true;
+        currentNode->setColor(GREEN);
+        bool ended = false;
+        for (auto neighbor : graph.getNeighbors(currentNode)) {
+            if (neighbor == endNode) {
+                queue.clear();
+                neighbor->previous = currentNode;
+                Node* currentPathNode = neighbor;
+                while (currentPathNode != nullptr) {
+                    currentPathNode->setColor(GREEN);
+                    path.push_back(graph.getVertex(currentPathNode->name));
+                    currentPathNode = currentPathNode->previous;
+                }
+                ended = true;
+                break;
+            }
+            else if (!neighbor->visited) {
+                neighbor->cost = currentNode->cost + 1;
+                queue.enqueue(neighbor, neighbor->cost);
+                neighbor->previous = currentNode;
+                neighbor->setColor(YELLOW);
+            }
+        }
+        if (!ended) {
+            currentNode->setColor(GRAY);
+        }
+    }
     return path;
 }
 
@@ -146,6 +182,43 @@ vector<Node *> aStar(BasicGraph& graph, Vertex* start, Vertex* end) {
     //       (The function body code provided below is just a stub that returns
     //        an empty vector so that the overall project will compile.
     //        You should remove that code and replace it with your implementation.)
+    graph.resetData();
     vector<Vertex*> path;
+
+    PriorityQueue<Node*> queue;
+    Node* startNode = graph.getNode(start->name);
+    Node* endNode = graph.getNode(end->name);
+    queue.enqueue(startNode, startNode->heuristic(endNode));
+
+    while (!queue.isEmpty()) {
+        Node* currentNode = queue.dequeue();
+        currentNode->visited = true;
+        currentNode->setColor(GREEN);
+        bool ended = false;
+        for (auto neighbor : graph.getNeighbors(currentNode)) {
+            if (neighbor == endNode) {
+                queue.clear();
+                neighbor->previous = currentNode;
+                Node* currentPathNode = neighbor;
+                while (currentPathNode != nullptr) {
+                    currentPathNode->setColor(GREEN);
+                    path.push_back(graph.getVertex(currentPathNode->name));
+                    currentPathNode = currentPathNode->previous;
+                }
+                ended = true;
+                break;
+            }
+            else if (!neighbor->visited) {
+                neighbor->cost = currentNode->cost + 1;
+                queue.enqueue(neighbor, neighbor->heuristic(endNode) + neighbor->cost);
+                neighbor->previous = currentNode;
+                neighbor->setColor(YELLOW);
+            }
+        }
+        if (!ended) {
+            currentNode->setColor(GRAY);
+        }
+    }
+
     return path;
 }

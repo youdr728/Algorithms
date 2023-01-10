@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Trailblazer1.0.0
-DISTDIR = /home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug/.tmp/Trailblazer1.0.0
+DISTDIR = /home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug/.tmp/Trailblazer1.0.0
 LINK          = g++
 LFLAGS        = 
 LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so /usr/lib/x86_64-linux-gnu/libGL.so -lpthread   
@@ -118,6 +118,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/g++-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/qconfig.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_Baloo.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KConfigCore.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KConfigGui.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KCoreAddons.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KDBusAddons.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KI18n.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KService.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KWindowSystem.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_accessibility_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_bootstrap_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_charts.pri \
@@ -161,6 +168,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickcontrols2.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quicktemplates2.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickwidgets.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_script.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_scripttools.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_service_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql_private.pri \
@@ -287,6 +296,13 @@ Makefile: ../trailblazer/Trailblazer.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/l
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/g++-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/qconfig.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_Baloo.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KConfigCore.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KConfigGui.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KCoreAddons.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KDBusAddons.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KI18n.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KService.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KWindowSystem.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_accessibility_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_bootstrap_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_charts.pri \
@@ -330,6 +346,8 @@ Makefile: ../trailblazer/Trailblazer.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/l
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickcontrols2.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quicktemplates2.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickwidgets.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_script.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_scripttools.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_service_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql_private.pri \
@@ -384,6 +402,13 @@ Makefile: ../trailblazer/Trailblazer.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/l
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/g++-unix.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/qconfig.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_Baloo.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KConfigCore.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KConfigGui.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KCoreAddons.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KDBusAddons.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KI18n.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KService.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_KWindowSystem.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_accessibility_support_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_bootstrap_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_charts.pri:
@@ -427,6 +452,8 @@ Makefile: ../trailblazer/Trailblazer.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/l
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickcontrols2.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quicktemplates2.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickwidgets.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_script.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_scripttools.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_service_support_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql_private.pri:
@@ -503,27 +530,27 @@ distclean: clean
 ####### Sub-libraries
 
 copyResources:
-	cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/maze01-tiny.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/maze02-tiny.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/maze03-small.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/maze04-small.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/maze05-medium.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/maze06-medium.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/maze07-large.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/maze08-large.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/maze09-huge.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/maze10-huge.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/terrain01-tiny.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/terrain02-tiny.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/terrain03-small.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/terrain04-small.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/terrain05-medium.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/terrain06-medium.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/terrain07-large.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/terrain08-large.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/terrain09-huge.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/res/terrain10-huge.txt" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
-	 cp -r "/home/youdr728/tddd86-ht22/lab8/trailblazer/lib/spl.jar" "/home/youdr728/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/maze01-tiny.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/maze02-tiny.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/maze03-small.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/maze04-small.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/maze05-medium.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/maze06-medium.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/maze07-large.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/maze08-large.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/maze09-huge.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/maze10-huge.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/terrain01-tiny.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/terrain02-tiny.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/terrain03-small.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/terrain04-small.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/terrain05-medium.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/terrain06-medium.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/terrain07-large.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/terrain08-large.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/terrain09-huge.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/res/terrain10-huge.txt" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
+	 cp -r "/home/filru737/HT_2022/tddd86-ht22/lab8/trailblazer/lib/spl.jar" "/home/filru737/HT_2022/tddd86-ht22/lab8/build-Trailblazer-Desktop-Debug" 
 	
 
 mocclean: compiler_moc_header_clean compiler_moc_objc_header_clean compiler_moc_source_clean
@@ -632,7 +659,8 @@ trailblazer.o: ../trailblazer/src/trailblazer.cpp ../trailblazer/src/costs.h \
 		../trailblazer/lib/StanfordCPPLib/gwindow.h \
 		../trailblazer/lib/StanfordCPPLib/gtypes.h \
 		../trailblazer/lib/StanfordCPPLib/console.h \
-		../trailblazer/lib/StanfordCPPLib/private/main.h
+		../trailblazer/lib/StanfordCPPLib/private/main.h \
+		../trailblazer/lib/StanfordCPPLib/pqueue.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o trailblazer.o ../trailblazer/src/trailblazer.cpp
 
 trailblazergui.o: ../trailblazer/src/trailblazergui.cpp ../trailblazer/lib/StanfordCPPLib/error.h \
