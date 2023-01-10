@@ -73,6 +73,7 @@ int main(int argc, char *argv[]) {
     auto begin = chrono::high_resolution_clock::now();
 
 
+    // Our implementation:
     for (Point p : points) {
         unordered_map<double, vector<Point>> map = unordered_map<double, vector<Point>>();
         for (Point q : points) {
@@ -80,21 +81,21 @@ int main(int argc, char *argv[]) {
                 continue; // Skip itself
             }
 
-            double slope = p.slopeTo(q);
+            double slope = p.slopeTo(q); // Get the slope from  origin (p) to point q
 
-            auto search = map.find(slope);
+            auto search = map.find(slope); // Get list of all points with equal slope to origin
             if (search != map.end()) {
-                // Create vector
+                // Create vector if non-existant
                 map.insert({slope, vector<Point>()});
                 map[slope].push_back(p);
             }
 
-            map[slope].push_back(q);
+            map[slope].push_back(q); // Append to the vector of slopes
 
 
-            if (map[slope].size() >= 4) {
+            if (map[slope].size() >= 4) { // If 4+ are found draw line
                 render_line(scene, p, q);
-                a.processEvents();
+                a.processEvents(); // Update screen to display the new line.
             }
         }
     }

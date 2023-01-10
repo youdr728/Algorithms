@@ -11,7 +11,7 @@
     
       N       brute       sortering
  ----------------------------------
-    150       0.027 s      00000
+    150       0.027 s
     200       0.075 s
     300       0.228 s
     400       0.527 s
@@ -28,6 +28,6 @@
  *
  **********************************************************************/
 
-Brute: Worst case : O(n?) eftersom den har 4 for-loopar i varandra
+Brute: Worst case : O(n^4) eftersom den har 4 for-loopar i varandra
 
-Sortering:
+Sortering: O(n^2 log n)
