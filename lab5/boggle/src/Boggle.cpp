@@ -115,14 +115,12 @@ bool Boggle::logGuess(string newGuess) {
     }
 
     if (!containsWord(newGuess)) {
-        //std::cout << std::endl;
         return false;
     }
 
     guesses.add(newGuess);
 
     score += newGuess.length() - 3; // Award one point per letter (only for letter #4 & up)
-    //std::cout << "Valid" << std::endl;
 
     return true;
 }
