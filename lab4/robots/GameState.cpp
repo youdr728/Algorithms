@@ -19,12 +19,10 @@ GameState::GameState(int numberOfRobots) {
         }
         robots.push_back(robot);
     }
-   std::cout << "(gamestate.cpp) ----------------- " << numberOfRobots << std::endl;
    teleportHero();
 }
 
 GameState& GameState::operator=(GameState replacement) {
-    std::cout << "Copying :)" << std::endl;
     for (Robot* robot : robots) {
         delete robot;
     }
@@ -41,8 +39,6 @@ GameState& GameState::operator=(GameState replacement) {
 }
 
 GameState::~GameState() {
-    // När ny bana skapas kallas dekonstruktorn på den nya för någon anledning.
-    std::cout << "(gamestate.cpp) ~" << robots.size() << std::endl;
     for (Robot* robot : robots) {
         delete robot;
     }
@@ -71,11 +67,6 @@ void GameState::moveRobots() {
 
 void GameState::updateCrashes() {
     for(unsigned i=0; i < robots.size(); ++i){
-//        for(unsigned j=0; j < junks.size(); ++j){
-//            if(robots[i].at(junks[j])){
-//                robots[i].doCrash();
-//            }
-//        }
         for(unsigned o=i+1; o < robots.size(); ++o){
             if(robots[i]->at(*robots[o])){
                 robots[i]->doCrash();
@@ -88,12 +79,9 @@ void GameState::updateCrashes() {
 void GameState::junkTheCrashed(){
     for(unsigned i=0; i < robots.size(); ++i){
         if (robots[i]->justCrashed()) {
-//            junks->push_back(Junk(robots[i]->asPoint()));
             Robot* temp = robots[i];
             robots[i] = new Junk(robots[i]->asPoint());
             delete temp;
-//            robots[i] = robots[robots.size()-1];
-//            robots.pop_back();
         }
     }
 }
@@ -118,15 +106,9 @@ bool GameState::stillLiveRobots() const {
 bool GameState::heroDead() const {
     for(const Robot* robot: robots){
         if(hero.at(*robot)){
-            std::cout << "(gamestate.cpp) ------ Hero died ------" << std::endl;
             return true;
         }
     }
-//    for(const Junk& junk: junks){
-//        if(hero.at(junk)){
-//            return true;
-//        }
-//    }
     return false;
 }
 
