@@ -41,7 +41,7 @@ void playOneGame(Boggle& boggle, bool randomBoard) {
         clearConsole();
         boggle.displayBoard();
         if (boggle.logGuess(guess)) {
-            std::cout << "You founda new word \"" << guess << "\"!" << std::endl;
+            std::cout << "You found a new word \"" << guess << "\"!" << std::endl;
         }
         std::cout << "Your score: " << boggle.score << std::endl;
         boggle.displayUserGuesses();

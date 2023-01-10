@@ -32,10 +32,10 @@ public:
     Boggle(); // Randomly generate board
     Boggle(string board); // Start with specified board
 
-    void prepareBoard(string forcedBoard  = ""); // Resets scores, empties guessed words & can shuffles board
+    void prepareBoard(const string forcedBoard  = ""); // Resets scores, empties guessed words & can shuffles board
     void displayBoard(); // Prints the boards
     void shuffleBoard(); // Shuffles the board ("rolls" dice and reorganizes them)
-    bool containsWord(string word); // Starts the function findWord for each point on the grid (until word is found)
+    bool containsWord(const string word); // Starts the function findWord for each point on the grid (until word is found)
     bool logGuess(string guess); // Checks if the guess is valid & not already guessed and adds it to the users guesses if valid. Returns whether it added it or nots
     void displayUserGuesses(); // Prints the users guesses in the form "Your words (wordcount): { <guesses> }"
     void findAllWords(); // Starts findAllwordsFrompoint from each dice
@@ -45,7 +45,7 @@ private:
     struct Point {
         int x;
         int y;
-        Point(int x, int y) {
+        Point(const int x, const int y) {
             this->x = x;
             this->y = y;
         };
@@ -57,8 +57,8 @@ private:
 
 
     void createBoard(string forcedBoard = ""); // Creates a semi-random board using CUBES as template. Overwrites each dice top-face with forcedBoard
-    bool findWord(Point origin, string word, Map<int, Set<int>> visited); // Attempts to find given word by searching all relevant neighbors
-    void findAllWordsFromPoint(Point origin, string currentWord, Map<int, Set<int>> visited); // Searches all neighbors to a point and recursively searches for all word that can be created from startpoint
+    bool findWord(const Point origin, const string word, Map<int, Set<int>> visited); // Attempts to find given word by searching all relevant neighbors
+    void findAllWordsFromPoint(const Point origin, const string currentWord, Map<int, Set<int>> visited); // Searches all neighbors to a point and recursively searches for all word that can be created from startpoint
     void toUpperCase(string& text); // Transforms a string to its uppercase version (i.e: "hello" -> "HELLO")
 };
 

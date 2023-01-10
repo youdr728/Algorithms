@@ -25,14 +25,14 @@ Boggle::Boggle() {
 /*
  * Creates a forced starting board
  */
-Boggle::Boggle(string forcedBoard) {
+Boggle::Boggle(const string forcedBoard) {
     createBoard(forcedBoard);
 }
 
 /*
  * Resets scores, empties guessed words & can shuffles board
  */
-void Boggle::prepareBoard(string forcedBoard) {
+void Boggle::prepareBoard(const string forcedBoard) {
     std::cout << forcedBoard << std::endl;
     if (forcedBoard.length() == NUM_CUBES) {
         createBoard(forcedBoard); // Overwrite current board
@@ -89,7 +89,7 @@ void Boggle::displayUserGuesses() {
 /*
  * Starts the function findWord for each point on the grid (until word is found)
  */
-bool Boggle::containsWord(string word) {
+bool Boggle::containsWord(const string word) {
     for (int x = 0; x < cubes.nCols; x++) {
         for (int y = 0; y < cubes.nRows; y++) {
             if (cubes.get(y, x)[0] == word[0]) {
@@ -108,7 +108,7 @@ bool Boggle::containsWord(string word) {
  * Checks if the guess is valid & not already guessed and adds it to the users guesses if valid. Returns whether it added it or not
  */
 bool Boggle::logGuess(string newGuess) {
-    toUpperCase(newGuess);
+    toUpperCase(newGuess); // Make  user capitalization doesn't matter
     //std::cout << (newGuess.length() < MIN_WORD_LENGTH) << guesses.contains(newGuess) << !lexicon.contains(newGuess) << std::endl;
     if (newGuess.length() < MIN_WORD_LENGTH || guesses.contains(newGuess) || !lexicon.contains(newGuess)) {
         return false;
@@ -185,7 +185,7 @@ void Boggle::findAllWords() {
 /*
  * Searches all neighbors to a point and recursively searches for all word that can be created from startpoint
  */
-void Boggle::findAllWordsFromPoint(Point origin, string currentWord, Map<int, Set<int>> visited) {
+void Boggle::findAllWordsFromPoint(const Point origin, const string currentWord, Map<int, Set<int>> visited) {
     if (!lexicon.containsPrefix(currentWord)) { // If prefix doesn't exist, then no word exists starting with this
         return; // Abort
     } // Else if correct lenght, real word and user nor computer has guessed the word, add it to guessed words
