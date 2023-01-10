@@ -2,6 +2,9 @@
  * TDDD86 Pattern Recognition
  * This program computes and plots all line segments involving 4 points
  * in a file using Qt.
+ *
+ * filru737
+ * youdr728
  */
 
 #include <QApplication>
@@ -14,13 +17,11 @@
 #include <chrono>
 #include "Point.h"
 #include <unordered_map>
-//#include "fast.cpp"
 
 // constants
 static const int SCENE_WIDTH = 512;
 static const int SCENE_HEIGHT = 512;
 
-//void doBrute(Vector<Point> points, QGraphicsScene* scene);
 
 void render_points(QGraphicsScene* scene, const vector<Point>& points) {
     for(const auto& point : points) {
