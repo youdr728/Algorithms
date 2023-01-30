@@ -4,7 +4,6 @@
  * Boggle är ett brädspel med bokstavs tärningar som går ut på att hitta ord
  */
 
-// Lägg till const
 
 #ifndef _boggle_h
 #define _boggle_h
@@ -14,7 +13,7 @@
 #include <lexicon.h>
 #include <grid.h>
 #include <vector.h>
-// TODO: include any other header files you need
+
 
 using namespace std;
 

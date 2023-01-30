@@ -19,7 +19,6 @@ GameState::GameState(int numberOfRobots) {
         }
         robots.push_back(robot);
     }
-
    teleportHero();
 }
 
@@ -44,8 +43,6 @@ GameState& GameState::operator=(GameState replacement) {
 }
 
 GameState::~GameState() {
-    // När ny bana skapas kallas dekonstruktorn på den nya för någon anledning.
-
     for (Robot* robot : robots) {
         delete robot;
     }
