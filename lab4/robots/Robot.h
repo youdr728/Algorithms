@@ -23,7 +23,7 @@ public:
     /*
      * Returns an identical robot
      */
-    Robot* clone();
+    virtual Robot* clone();
 
     /*
      * did not crash yet

@@ -14,10 +14,14 @@ public:
     Junk(const Point& p): Robot(p){}
 
     /*
+     * Returns an identical Junk
+     */
+    Junk* clone();
+
+    /*
     * Draws this junk onto the given QGraphicsScene.
     */
     void draw(QGraphicsScene* scene) const;
-
 
     /*
      * Returns false

@@ -6,6 +6,10 @@
 #include "Junk.h"
 #include "constants.h"
 
+Junk* Junk::clone() {
+    return new Junk(this->asPoint());
+}
+
 bool Junk::canMove() const{
     return false;
 }
