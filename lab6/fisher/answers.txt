@@ -30,4 +30,13 @@
 
 
 
-svara på Del C
+-----------     DEL C:
+MyVector & MyPriorityQueue:
+    11s
+
+Vector & PriorityQueue:
+    19s
+
+Våran implementation gick snabbare.
+
+(oklar matte: nästan 75% kortare tid.)

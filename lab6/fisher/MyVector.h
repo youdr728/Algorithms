@@ -15,32 +15,46 @@ class MyVector
 {
 
 public:
+    // Initializes a new empty list with capacity 1.
     MyVector();
 
+    // Frees all dynamically allocated memory belonging to the list
     ~MyVector();
 
+    // Constructs a copy of other list's values.
     MyVector(const MyVector& other);
 
+    // Copies the other array into itself.
     MyVector& operator =(const MyVector& other);
 
-
+    // Appends an element to the end of the list.
     void push_back(const T&);
 
+    // Deletes & removes the last element of the list.
     void pop_back();
 
+    // Returns a reference to the value at index i
     T& operator[](unsigned i);
 
+    // Returns a const reference to value at index i
     const T& operator[](unsigned i)const;
 
+    // Returns true if list has no elements
     bool empty()const;
 
+    // Returns a pointer to the first element of the list
     T* begin();
 
+    // Returns a pointer to the end of the list
     T* end();
 
+    // Frees all dynamically allocated memoy of the list and reduces size to 1.
     void clear();
 
+    // Returns the number of elements in the list
     unsigned size()const;
+
+    // Returns size of array
     unsigned storageCapacity()const;
 
 private:
@@ -48,27 +62,22 @@ private:
     unsigned capacity = 1; // Default size is 1
     T* items; // Start with size of 1
 
-    // D.R.Y   VV
-    // copyArray(const MyVector& other);
 };
 
-// Initializes a new empty list with capacity 1.
+
 template<typename T>
 MyVector<T>::MyVector(){
     // Creates an array of size 1
     items = new T[1];
-    //MYEXCEPTION("unimplemented method");
 }
 
-// Frees all dynamically allocated memory belonging to the list
+
 template<typename T>
 MyVector<T>::~MyVector(){
     delete [] items;
-
-    //MYEXCEPTION("unimplemented method");
 }
 
-// Constructs a copy of other list's values.
+
 template<typename T>
 MyVector<T>::MyVector(const MyVector& other){
     if (this == &other) {
@@ -82,10 +91,9 @@ MyVector<T>::MyVector(const MyVector& other){
 
     this->numberOfElements = other.numberOfElements;
     this->capacity = other.numberOfElements;
-    //MYEXCEPTION("unimplemented method");
 }
 
-// Copies the other array into itself.
+
 template<typename T>
 MyVector<T>& MyVector<T>::operator =(const MyVector& other){
     if (this == &other) {
@@ -97,23 +105,19 @@ MyVector<T>& MyVector<T>::operator =(const MyVector& other){
     for (unsigned i = 0; i < other.numberOfElements; i++) {
         items[i] = other.items[i];
     }
-    //this->items = copiedArray;
     this->numberOfElements = other.numberOfElements;
     this->capacity = other.numberOfElements;
     return *this;
-    //MYEXCEPTION("unimplemented method");
 }
 
-// Appends an element to the end of the list.
+
 template<typename T>
 void MyVector<T>::push_back(const T& e){
-    // Check if it will exceed limit
     if(capacity < numberOfElements + 1) {
         // Double size of items
         T* newItems = new T[capacity*2];
         for (unsigned i = 0; i < numberOfElements; i++) {
             newItems[i] = items[i];
-            //delete items[i]; // Can now safely delete old element (May not be needed?)
         }
         T* oldArr = this->items;
         this->items = newItems;
@@ -124,48 +128,35 @@ void MyVector<T>::push_back(const T& e){
 
     this->items[numberOfElements] = e;
     this->numberOfElements++;
-
-    //MYEXCEPTION("unimplemented method");
 }
 
-// Deletes & removes the lReturnera en pekare till ett element som ligger “efter sista elementet i listan”.ast element of the list.
 template<typename T>
 void MyVector<T>::pop_back(){
     // Only delete item if an item exists
     if (!empty()) {
-        //delete &items[numberOfElements];
         numberOfElements--;
     }
-    //MYEXCEPTION("unimplemented method");
 }
 
-// Returns a reference to the value at index i
+
 template<typename T>
 T& MyVector<T>::operator[](unsigned i){
-//    if (i > capacity) {Returnera en pekare till ett element som ligger “efter sista elementet i listan”.
-//        MYEXCEPTION("Attempt to index item out of range.");
-//    }
-
     return items[i];
 }
 
-// Returns a const reference to value at index i
+
 template<typename T>
 const T& MyVector<T>::operator[](unsigned i)const{
-//    if (i > capacity) {
-//        MYEXCEPTION("Attempt to index item out of range.");
-//    }
-
     return items[i];
 }
 
-// Returns true if list has no elements
+
 template<typename T>
 bool MyVector<T>::empty()const{
     return numberOfElements == 0;
 }
 
-// Frees all dynamically allocated memoy of the list and reduces size to 1.
+
 template<typename T>
 void MyVector<T>::clear(){
     delete [] items; // Or is it delete []?
@@ -174,7 +165,7 @@ void MyVector<T>::clear(){
     capacity = 1;
 }
 
-// Returns the number of elements in the list
+
 template<typename T>
 unsigned MyVector<T>::size()const{
     return numberOfElements;
@@ -187,13 +178,12 @@ unsigned MyVector<T>::storageCapacity()const{
 }
 
 
-// Returns a pointer to the first element of the list
 template<typename T>
 T* MyVector<T>::begin(){
     return &items[0];
 }
 
-// Returns a pointer to the end of the list
+
 template<typename T>
 T* MyVector<T>::end(){
     return &items[numberOfElements]; // Will be 1 more than capacity

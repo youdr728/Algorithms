@@ -18,39 +18,44 @@ class MyPriorityQueue
     C strictly_larger_operator;
 
 public:
+    // Standard constructor
     MyPriorityQueue();
 
+    // Standard deconstructor
     ~MyPriorityQueue();
 
+    // Adds the given element to the queue
     void push(const T& t);
 
+    // Returns the element with highest priority
     T top()const;
 
+    // Removes the element with highest priority
     void pop();
 
+    // Returns whether the queue is empty or not
     bool empty()const;
 
+    // Returns the number of elements
     unsigned size() const;
 
 private:
     MyVector<T> queue = MyVector<T>();
 
+    // Swaps the position of two elements
     void swap(unsigned i, unsigned j);
 };
 
 
 template <typename T, typename C>
 MyPriorityQueue<T,C>::MyPriorityQueue(){
-    // Standard constructor
 }
 
 template <typename T, typename C>
 MyPriorityQueue<T,C>::~MyPriorityQueue(){
-    // Standard deconstructor
 }
 
 
-// Adds the given element to the queue
 template <typename T, typename C>
 void MyPriorityQueue<T,C>::push(const T& t){
 
@@ -68,13 +73,13 @@ void MyPriorityQueue<T,C>::push(const T& t){
 
 }
 
-// Returns the element with highest priority
+
 template <typename T, typename C>
 T MyPriorityQueue<T,C>::top()const{
     return queue[0];
 }
 
-// Removes the element with highest priority
+
 template <typename T, typename C>
 void MyPriorityQueue<T,C>::pop(){
     unsigned index = 0; // Start at the top
@@ -101,20 +106,19 @@ void MyPriorityQueue<T,C>::pop(){
 
 }
 
-// Returns whether the queue is empty or not
+
 template <typename T, typename C>
 bool MyPriorityQueue<T,C>::empty()const{
     return queue.empty();
 }
 
-// Returns the number of elements
+
 template <typename T, typename C>
 unsigned MyPriorityQueue<T,C>::size()const{
     return queue.size();
 }
 
 
-// Swaps the position of two elements
 template <typename T, typename C>
 void MyPriorityQueue<T, C>::swap(unsigned i, unsigned j) {
     T tmpHolder = queue[i];
