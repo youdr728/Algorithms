@@ -195,16 +195,16 @@ vector<Node *> aStar(BasicGraph& graph, Vertex* start, Vertex* end) {
         for (auto neighbor : graph.getNeighbors(currentNode)) {
             if (!neighbor->visited) {
                 auto edge = graph.getEdge(currentNode, neighbor);
-                double newCost = currentNode->cost + edge->cost + neighbor->heuristic(endNode);
-                if (newCost < neighbor->cost or neighbor->cost == 0) { // Update if shorter path is found (or if cost of other path uninitialized)
+                double thisCost = currentNode->cost + edge->cost;
+                if (thisCost < neighbor->cost or neighbor->cost == 0) { // Update if shorter path is found (or if cost of other path uninitialized)
                     neighbor->cost = currentNode->cost + edge->cost;
                     neighbor->previous = currentNode;
 
-                    if (queueStore.find(neighbor) != queueStore.end()) { // Add/update
-                        queue.changePriority(neighbor, neighbor->cost);
+                    if (queueStore.find(neighbor) != queueStore.end()) { // Determine if it exists
+                        queue.changePriority(neighbor, neighbor->cost + neighbor->heuristic(endNode)); // Update
                     }
                     else {
-                        queue.enqueue(neighbor, neighbor->cost);
+                        queue.enqueue(neighbor, neighbor->cost + neighbor->heuristic(endNode)); // Add
                     }
                 }
 
